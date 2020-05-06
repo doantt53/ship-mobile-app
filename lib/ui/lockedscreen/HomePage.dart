@@ -6,7 +6,7 @@ import '../../constants.dart';
 import '../../data/models/auth.dart';
 import '../app/app_drawer.dart';
 
-class Home extends StatelessWidget {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthModel>(context, listen: true);

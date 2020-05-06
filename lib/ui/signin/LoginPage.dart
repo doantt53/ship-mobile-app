@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants.dart';
 import '../../data/models/auth.dart';
 import '../../utils/popUp.dart';
-import 'newaccount.dart';
+import 'NewAccountPage.dart';
 // import 'forgot.dart';
 
 class LoginPage extends StatefulWidget {

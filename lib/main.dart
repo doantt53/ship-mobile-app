@@ -5,10 +5,10 @@ import 'package:login/ui/blue/bluetooth_page.dart';
 import 'package:persist_theme/persist_theme.dart';
 import 'package:provider/provider.dart';
 
-import 'ui/lockedscreen/home.dart';
-import 'ui/lockedscreen/settings.dart';
-import 'ui/signin/newaccount.dart';
-import 'ui/signin/signin.dart';
+import 'ui/lockedscreen/HomePage.dart';
+import 'ui/lockedscreen/SettingsPage.dart';
+import 'ui/signin/NewAccountPage.dart';
+import 'ui/signin/LoginPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -48,13 +48,13 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             theme: model.theme,
             home: Consumer<AuthModel>(builder: (context, model, child) {
-              if (model?.user != null) return Home();
+              if (model?.user != null) return HomePage();
               return LoginPage();
             }),
             routes: <String, WidgetBuilder>{
               "/login": (BuildContext context) => LoginPage(),
-              "/menu": (BuildContext context) => Home(),
-              "/home": (BuildContext context) => Home(),
+              "/menu": (BuildContext context) => HomePage(),
+              "/home": (BuildContext context) => HomePage(),
               "/settings": (BuildContext context) => SettingsPage(),
 //              "/create": (BuildContext context) => CreateAccount(),
               "/bluetooth": (BuildContext context) => BluetoothPage(),
