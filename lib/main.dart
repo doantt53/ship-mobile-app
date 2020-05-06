@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
               "/menu": (BuildContext context) => Home(),
               "/home": (BuildContext context) => Home(),
               "/settings": (BuildContext context) => SettingsPage(),
-              "/create": (BuildContext context) => CreateAccount(),
+//              "/create": (BuildContext context) => CreateAccount(),
               "/bluetooth": (BuildContext context) => BluetoothPage(),
             },
           ),

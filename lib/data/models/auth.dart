@@ -49,6 +49,7 @@ class AuthModel extends ChangeNotifier {
     SharedPreferences.getInstance().then((prefs) {
       prefs.setBool("stay_logged_in", value);
     });
+    print(handleStayLoggedIn);
   }
 
   void loadSettings() async {
@@ -132,23 +133,32 @@ class AuthModel extends ChangeNotifier {
 
     // TODO: API LOGIN CODE HERE
     String _url = "http://tau.dvbk.vn/API_Ship/Login?loginname=$_username&pass=$_password";
+//    var _data = await http.get(_url);
+//    final String res = _data.body;
+//    _status = res["LoginStatus"];
     NetworkUtil _netUtil = new NetworkUtil();
-    _netUtil.get(_url).then((dynamic res) {
-      _status = res["LoginStatus"];
-      // Login
-      print(res["LoginStatus"]);
-      //print(res.toString());
-      // if(res["error"]) throw new Exception(res["error_msg"]);
-      // return new User.map(res["user"]);
-    });
-    // print(_url);
+    var _data = await _netUtil.get(_url); //.then((dynamic res) {
+
+////      _status = res["LoginStatus"];
+//      // Login
+//
+//      //print(res.toString());
+//      // if(res["error"]) throw new Exception(res["error_msg"]);
+//      // return new User.map(res["user"]);
+//      return res["LoginStatus"];
+//      return res;
+//    });
+//     print(_data);
 
 //    await Future.delayed(Duration(seconds: 3));
 //    print("Logging In => $_username, $_password");
 
-    if (_rememberMe) {
+    _status = _data["LoginStatus"];
+
+    if (_rememberMe && _status == 1) {
       SharedPreferences.getInstance().then((prefs) {
         prefs.setString("saved_username", _username);
+        prefs.setString("saved_password", _password);
       });
     }
     User _newUser = new User();
@@ -158,7 +168,7 @@ class AuthModel extends ChangeNotifier {
 
     // Get Info For User
 //    User _newUser = await getInfo(uuid.v4().toString());
-    if (_newUser != null) {
+    if (_status == 1) {
       _user = _newUser;
       notifyListeners();
 
@@ -170,6 +180,9 @@ class AuthModel extends ChangeNotifier {
     }
 //
 //    if (_newUser?.token == null || _newUser.token.isEmpty) return false;
+//    print("Login status $_status");
+
+
     if (_status == 0) return false;
 
     return true;

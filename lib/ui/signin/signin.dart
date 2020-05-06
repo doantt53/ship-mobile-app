@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:login/ui/blue/BluetoothPage.dart';
+import 'package:login/ui/blue/ChatPage.dart';
+import 'package:login/ui/blue/SelectBondedDevicePage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants.dart';
@@ -75,9 +79,9 @@ class LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   ListTile(
                     title: TextFormField(
-                      decoration: InputDecoration(labelText: 'Username'),
+                      decoration: InputDecoration(labelText: 'Tên đăng nhập'),
                       validator: (val) =>
-                      val.length < 1 ? 'Username Required' : null,
+                      val.length < 1 ? 'Vui lòng nhập tên đăng nhập' : null,
                       onSaved: (val) => _username = val,
                       obscureText: false,
                       keyboardType: TextInputType.text,
@@ -87,9 +91,9 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   ListTile(
                     title: TextFormField(
-                      decoration: InputDecoration(labelText: 'Password'),
+                      decoration: InputDecoration(labelText: 'Mật khẩu'),
                       validator: (val) =>
-                      val.length < 1 ? 'Password Required' : null,
+                      val.length < 1 ? 'Vui lòng nhập mật khẩu' : null,
                       onSaved: (val) => _password = val,
                       obscureText: true,
                       controller: _controllerPassword,
@@ -102,7 +106,7 @@ class LoginPageState extends State<LoginPage> {
             ),
             ListTile(
               title: Text(
-                'Remember Me',
+                'Nhớ tên đăng nhập & mật khẩu',
                 textScaleFactor: textScaleFactor,
               ),
               trailing: Switch.adaptive(
@@ -113,7 +117,7 @@ class LoginPageState extends State<LoginPage> {
             ListTile(
               title: RaisedButton(
                 child: Text(
-                  'Login',
+                  'Đăng nhập',
                   textScaleFactor: textScaleFactor,
                   style: TextStyle(color: Colors.white),
                 ),
@@ -127,7 +131,7 @@ class LoginPageState extends State<LoginPage> {
                       content: Row(
                         children: <Widget>[
                           CircularProgressIndicator(),
-                          Text("  Logging In...")
+                          Text("  Đang đăng nhập ...")
                         ],
                       ),
                     );
@@ -142,14 +146,16 @@ class LoginPageState extends State<LoginPage> {
                         .then((result) {
                       if (result) {
                       } else {
-                        setState(() => this._status = 'rejected');
-                        showAlertPopup(context, 'Info', _auth.errorMessage);
+                        print(result);
+                        setState(() => this._status = 'reject');
+                        showAlertPopup(context, 'Đăng nhập lỗi',
+                            'Tên đăng nhập hoặc mật khẩu không đúng.');
                       }
-                      // if (!globals.isBioSetup) {
-                      //   setState(() {
-                      //     print('Bio No Longer Setup');
-                      //   });
-                      // }
+//                      // if (!globals.isBioSetup) {
+//                      //   setState(() {
+//                      //     print('Bio No Longer Setup');
+//                      //   });
+//                      // }
                       _scaffoldKey.currentState.hideCurrentSnackBar();
                     });
                   }
@@ -171,25 +177,35 @@ class LoginPageState extends State<LoginPage> {
               //               },
               //       ),
             ),
-            FlatButton(
-              child: Text(
-                'Need an Account?',
-                textScaleFactor: textScaleFactor,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CreateAccount(),
-                      fullscreenDialog: true),
-                ).then((success) => success
-                    ? showAlertPopup(
-                    context, 'Info', "New Account Created, Login Now.")
-                    : null);
-              },
-            ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        // onPressed: _incrementCounter,
+        onPressed: () async {
+          // Add your onPressed code here!
+          final BluetoothDevice selectedDevice =
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return SelectBondedDevicePage(checkAvailability: false);
+              },
+            ),
+          );
+
+          if (selectedDevice != null) {
+            print('Connect -> selected ' + selectedDevice.address);
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) {
+                return ChatPage(server: selectedDevice);
+              },
+            ));
+          } else {
+            print('Connect -> no device selected');
+          }
+        },
+        tooltip: 'Tin nhắn',
+        child: Icon(Icons.message),
       ),
     );
   }
