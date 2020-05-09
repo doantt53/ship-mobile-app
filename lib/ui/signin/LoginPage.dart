@@ -5,6 +5,7 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:login/ui/blue/BluetoothPage.dart';
 import 'package:login/ui/blue/ChatPage.dart';
 import 'package:login/ui/blue/SelectBondedDevicePage.dart';
+import 'package:login/ui/sms/ContactsPage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants.dart';
@@ -12,6 +13,9 @@ import '../../data/models/auth.dart';
 import '../../utils/popUp.dart';
 import 'NewAccountPage.dart';
 // import 'forgot.dart';
+
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/cupertino.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({this.username});
@@ -183,30 +187,66 @@ class LoginPageState extends State<LoginPage> {
       floatingActionButton: FloatingActionButton(
         // onPressed: _incrementCounter,
         onPressed: () async {
-          // Add your onPressed code here!
-          final BluetoothDevice selectedDevice =
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return SelectBondedDevicePage(checkAvailability: false);
-              },
-            ),
-          );
-
-          if (selectedDevice != null) {
-            print('Connect -> selected ' + selectedDevice.address);
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) {
-                return ChatPage(server: selectedDevice);
-              },
-            ));
+//          // Add your onPressed code here!
+//          final BluetoothDevice selectedDevice =
+//          await Navigator.of(context).push(
+//            MaterialPageRoute(
+//              builder: (context) {
+//                return SelectBondedDevicePage(checkAvailability: false);
+//              },
+//            ),
+//          );
+//
+//          if (selectedDevice != null) {
+//            print('Connect -> selected ' + selectedDevice.address);
+//            Navigator.of(context).push(MaterialPageRoute(
+//              builder: (context) {
+//                return ChatPage(server: selectedDevice);
+//              },
+//            ));
+//          } else {
+//            print('Connect -> no device selected');
+//          }
+          final PermissionStatus permissionStatus = await _getPermission();
+          if (permissionStatus == PermissionStatus.granted) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ContactsPage()));
           } else {
-            print('Connect -> no device selected');
+            //If permissions have been denied show standard cupertino alert dialog
+            showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    CupertinoAlertDialog(
+                      title: Text('Permissions error'),
+                      content: Text('Please enable contacts access '
+                          'permission in system settings'),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          child: Text('OK'),
+                          onPressed: () => Navigator.of(context).pop(),
+                        )
+                      ],
+                    ));
           }
         },
         tooltip: 'Tin nhắn',
         child: Icon(Icons.message),
       ),
     );
+  }
+
+  Future<PermissionStatus> _getPermission() async {
+    final PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.contacts);
+    if (permission != PermissionStatus.granted) {
+      final Map<PermissionGroup, PermissionStatus> permissionStatus =
+      await PermissionHandler()
+          .requestPermissions([PermissionGroup.contacts]);
+      return permissionStatus[PermissionGroup.contacts] ??
+          PermissionStatus.unknown;
+    } else {
+      return permission;
+    }
   }
 }
