@@ -5,7 +5,11 @@ import 'package:login/data/models/auth.dart';
 import 'package:flutter_whatsnew/flutter_whatsnew.dart';
 import 'package:login/ui/blue/ChatPage.dart';
 import 'package:login/ui/blue/SelectBondedDevicePage.dart';
+import 'package:login/ui/sms/ContactsPage.dart';
 import 'package:provider/provider.dart';
+
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/cupertino.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -77,6 +81,17 @@ class AppDrawer extends StatelessWidget {
               },
             ),
             Divider(height: 1.0),
+//            ListTile(
+//              leading: Icon(Icons.phone),
+//              title: Text(
+//                'Danh bạ',
+//                textScaleFactor: textScaleFactor,
+//              ),
+//              onTap: () {
+//                Navigator.of(context).popAndPushNamed("/contacts");
+//              },
+//            ),
+//            Divider(height: 1.0),
             ListTile(
               leading: Icon(Icons.bluetooth),
               title: Text(
@@ -95,24 +110,46 @@ class AppDrawer extends StatelessWidget {
                 textScaleFactor: textScaleFactor,
               ),
               onTap: () async {
-                final BluetoothDevice selectedDevice =
-                await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SelectBondedDevicePage(checkAvailability: false);
-                    },
-                  ),
-                );
-
-                if (selectedDevice != null) {
-                  print('Connect -> selected ' + selectedDevice.address);
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) {
-                      return ChatPage(server: selectedDevice);
-                    },
-                  ));
+//                final BluetoothDevice selectedDevice =
+//                await Navigator.of(context).push(
+//                  MaterialPageRoute(
+//                    builder: (context) {
+//                      return SelectBondedDevicePage(checkAvailability: false);
+//                    },
+//                  ),
+//                );
+//
+//                if (selectedDevice != null) {
+//                  print('Connect -> selected ' + selectedDevice.address);
+//                  Navigator.of(context).push(MaterialPageRoute(
+//                    builder: (context) {
+//                      return ChatPage(server: selectedDevice);
+//                    },
+//                  ));
+//                } else {
+//                  print('Connect -> no device selected');
+//                }
+                final PermissionStatus permissionStatus = await _getPermission();
+                if (permissionStatus == PermissionStatus.granted) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ContactsPage()));
                 } else {
-                  print('Connect -> no device selected');
+                  //If permissions have been denied show standard cupertino alert dialog
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          CupertinoAlertDialog(
+                            title: Text('Permissions error'),
+                            content: Text('Please enable contacts access '
+                                'permission in system settings'),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: Text('OK'),
+                                onPressed: () => Navigator.of(context).pop(),
+                              )
+                            ],
+                          ));
                 }
               },
             ),
@@ -129,5 +166,20 @@ class AppDrawer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+
+  Future<PermissionStatus> _getPermission() async {
+    final PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.contacts);
+    if (permission != PermissionStatus.granted) {
+      final Map<PermissionGroup, PermissionStatus> permissionStatus =
+      await PermissionHandler()
+          .requestPermissions([PermissionGroup.contacts]);
+      return permissionStatus[PermissionGroup.contacts] ??
+          PermissionStatus.unknown;
+    } else {
+      return permission;
+    }
   }
 }

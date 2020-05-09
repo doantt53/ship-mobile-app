@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:login/data/models/auth.dart';
 import 'package:login/ui/blue/BluetoothPage.dart';
-import 'package:login/ui/blue/bluetooth_page.dart';
+import 'package:login/ui/sms/SeeContactsButton.dart';
 import 'package:persist_theme/persist_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -58,8 +58,41 @@ class _MyAppState extends State<MyApp> {
               "/settings": (BuildContext context) => SettingsPage(),
 //              "/create": (BuildContext context) => CreateAccount(),
               "/bluetooth": (BuildContext context) => BluetoothPage(),
+//              "/contacts": (BuildContext context) => SeeContactsButton(),
             },
           ),
         ));
+  }
+}
+
+
+class MyAppSMS extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Contacts Tutorial',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'Contacts Tutorial'),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Center(
+        child: SeeContactsButton(),
+      ),
+    );
   }
 }

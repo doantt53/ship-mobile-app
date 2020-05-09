@@ -3,6 +3,11 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:login/ui/sms/ContactsPage.dart';
+
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatPage extends StatefulWidget {
   final BluetoothDevice server;
@@ -21,6 +26,8 @@ class _Message {
 }
 
 class _ChatPage extends State<ChatPage> {
+  String _phone_number = '';
+
   static final clientID = 0;
   BluetoothConnection connection;
 
@@ -28,10 +35,11 @@ class _ChatPage extends State<ChatPage> {
   String _messageBuffer = '';
 
   final TextEditingController textEditingController =
-      new TextEditingController();
+  new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
 
   bool isConnecting = true;
+
   bool get isConnected => connection != null && connection.isConnected;
 
   bool isDisconnecting = false;
@@ -46,6 +54,11 @@ class _ChatPage extends State<ChatPage> {
       setState(() {
         isConnecting = false;
         isDisconnecting = false;
+      });
+
+      SharedPreferences.getInstance().then((prefs) {
+        _phone_number = prefs.getString("phone_number_receive") ?? "";
+        print("_ChatPage => $_phone_number");
       });
 
       connection.input.listen(_onDataReceived).onDone(() {
@@ -89,7 +102,7 @@ class _ChatPage extends State<ChatPage> {
         children: <Widget>[
           Container(
             child: Text(
-                (text) {
+                    (text) {
                   return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
                 }(_message.text.trim()),
                 style: TextStyle(color: Colors.white)),
@@ -98,7 +111,7 @@ class _ChatPage extends State<ChatPage> {
             width: 222.0,
             decoration: BoxDecoration(
                 color:
-                    _message.whom == clientID ? Colors.blueAccent : Colors.grey,
+                _message.whom == clientID ? Colors.blueAccent : Colors.grey,
                 borderRadius: BorderRadius.circular(7.0)),
           ),
         ],
@@ -113,8 +126,36 @@ class _ChatPage extends State<ChatPage> {
           title: (isConnecting
               ? Text('Connecting chat to ' + widget.server.name + '...')
               : isConnected
-                  ? Text('Live chat with ' + widget.server.name)
-                  : Text('Chat log with ' + widget.server.name))),
+              ? Text('Tin nhắn: ' + _phone_number)
+              : Text('Chat log with ' + widget.server.name)),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () async {
+//                final PermissionStatus permissionStatus =
+//                    await _getPermission();
+//                if (permissionStatus == PermissionStatus.granted) {
+//                  Navigator.push(context,
+//                      MaterialPageRoute(builder: (context) => ContactsPage()));
+//                } else {
+//                  //If permissions have been denied show standard cupertino alert dialog
+//                  showDialog(
+//                      context: context,
+//                      builder: (BuildContext context) => CupertinoAlertDialog(
+//                            title: Text('Permissions error'),
+//                            content: Text('Please enable contacts access '
+//                                'permission in system settings'),
+//                            actions: <Widget>[
+//                              CupertinoDialogAction(
+//                                child: Text('OK'),
+//                                onPressed: () => Navigator.of(context).pop(),
+//                              )
+//                            ],
+//                          ));
+//                }
+              },
+            )
+          ]),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -136,8 +177,8 @@ class _ChatPage extends State<ChatPage> {
                         hintText: isConnecting
                             ? 'Wait until connected...'
                             : isConnected
-                                ? 'Type your message...'
-                                : 'Chat got disconnected',
+                            ? 'Type your message...'
+                            : 'Chat got disconnected',
                         hintStyle: const TextStyle(color: Colors.grey),
                       ),
                       enabled: isConnected,
@@ -195,7 +236,7 @@ class _ChatPage extends State<ChatPage> {
             1,
             backspacesCounter > 0
                 ? _messageBuffer.substring(
-                    0, _messageBuffer.length - backspacesCounter)
+                0, _messageBuffer.length - backspacesCounter)
                 : _messageBuffer + dataString.substring(0, index),
           ),
         );
@@ -204,7 +245,7 @@ class _ChatPage extends State<ChatPage> {
     } else {
       _messageBuffer = (backspacesCounter > 0
           ? _messageBuffer.substring(
-              0, _messageBuffer.length - backspacesCounter)
+          0, _messageBuffer.length - backspacesCounter)
           : _messageBuffer + dataString);
     }
   }
@@ -213,9 +254,13 @@ class _ChatPage extends State<ChatPage> {
     text = text.trim();
     textEditingController.clear();
 
+
     if (text.length > 0) {
       try {
-        connection.output.add(utf8.encode(text + "\r\n"));
+        String send = "\$MES_$_phone_number" + "_" + text + "\r\n";
+        print(send);
+
+        connection.output.add(utf8.encode(send));
         await connection.output.allSent;
 
         setState(() {
@@ -232,6 +277,20 @@ class _ChatPage extends State<ChatPage> {
         // Ignore error, but notify state
         setState(() {});
       }
+    }
+  }
+
+  Future<PermissionStatus> _getPermission() async {
+    final PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.contacts);
+    if (permission != PermissionStatus.granted) {
+      final Map<PermissionGroup, PermissionStatus> permissionStatus =
+      await PermissionHandler()
+          .requestPermissions([PermissionGroup.contacts]);
+      return permissionStatus[PermissionGroup.contacts] ??
+          PermissionStatus.unknown;
+    } else {
+      return permission;
     }
   }
 }
