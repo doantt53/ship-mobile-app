@@ -27,27 +27,27 @@ class SettingsPage extends StatelessWidget {
                 Container(
                   height: 10.0,
                 ),
-                if (!kIsWeb)
-                  ListTile(
-                    leading: Icon(Icons.fingerprint),
-                    title: Text(
-                      'Enable Biometrics',
-                      textScaleFactor: textScaleFactor,
-                    ),
-                    subtitle: Platform.isIOS
-                        ? Text(
-                      'TouchID or FaceID',
-                      textScaleFactor: textScaleFactor,
-                    )
-                        : Text(
-                      'Fingerprint',
-                      textScaleFactor: textScaleFactor,
-                    ),
-                    trailing: Switch.adaptive(
-                      onChanged: _auth.handleIsBioSetup,
-                      value: _auth.isBioSetup,
-                    ),
-                  ),
+//                if (!kIsWeb)
+//                  ListTile(
+//                    leading: Icon(Icons.fingerprint),
+//                    title: Text(
+//                      'Enable Biometrics',
+//                      textScaleFactor: textScaleFactor,
+//                    ),
+//                    subtitle: Platform.isIOS
+//                        ? Text(
+//                      'TouchID or FaceID',
+//                      textScaleFactor: textScaleFactor,
+//                    )
+//                        : Text(
+//                      'Fingerprint',
+//                      textScaleFactor: textScaleFactor,
+//                    ),
+//                    trailing: Switch.adaptive(
+//                      onChanged: _auth.handleIsBioSetup,
+//                      value: _auth.isBioSetup,
+//                    ),
+//                  ),
                 Divider(
                   height: 20.0,
                 ),

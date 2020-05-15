@@ -158,8 +158,7 @@ class AuthModel extends ChangeNotifier {
     _status = _data["LoginStatus"];
 
     print(_status);
-
-    if (_rememberMe && _status != 0) {
+    if (_rememberMe && _status > 0) {
       SharedPreferences.getInstance().then((prefs) {
         prefs.setString("saved_username", _username);
         prefs.setString("saved_password", _password);
@@ -175,7 +174,7 @@ class AuthModel extends ChangeNotifier {
 
     // Get Info For User
 //    User _newUser = await getInfo(uuid.v4().toString());
-    if (_status != 0) {
+    if (_status > 0) {
       _user = _newUser;
       notifyListeners();
 
@@ -190,7 +189,7 @@ class AuthModel extends ChangeNotifier {
 //    print("Login status $_status");
 
 
-    if (_status == 0) return false;
+    if (_status <= 0) return false;
 
     return true;
   }
