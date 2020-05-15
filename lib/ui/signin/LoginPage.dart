@@ -64,12 +64,14 @@ class LoginPageState extends State<LoginPage> {
           key: PageStorageKey("Divider 1"),
           children: <Widget>[
             SizedBox(
-              height: 220.0,
+              height: 120.0,
               child: Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: Icon(
-                    Icons.person,
-                    size: 175.0,
+                  child: Image.asset(
+                    'assets/logobk.png',
+                    fit: BoxFit.cover,
+                    height: 10, // set your height
+                    width: 50, // and width here
                   )),
             ),
             Form(

@@ -85,3 +85,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  assets:
+    - assets/ship-move.png
+    - assets/ship-move-1.png
+    - assets/ship-move-3.png
+    - assets/logobk.png
+

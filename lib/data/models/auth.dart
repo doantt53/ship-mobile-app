@@ -12,6 +12,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
 import '../classes/user.dart';
+import '../global.dart';
 
 class AuthModel extends ChangeNotifier {
   String errorMessage = "";
@@ -132,19 +133,20 @@ class AuthModel extends ChangeNotifier {
     int _status = 0;
 
     // TODO: API LOGIN CODE HERE
-    String _url = "http://tau.dvbk.vn/API_Ship/Login?loginname=$_username&pass=$_password";
+    String _url = "http://tau.dvbk.vn/API_Ship/Login?loginname=$_username&pass=$_password&key=$key";
 //    var _data = await http.get(_url);
 //    final String res = _data.body;
 //    _status = res["LoginStatus"];
     NetworkUtil _netUtil = new NetworkUtil();
     var _data = await _netUtil.get(_url); //.then((dynamic res) {
 
+
 ////      _status = res["LoginStatus"];
 //      // Login
 //
 //      //print(res.toString());
 //      // if(res["error"]) throw new Exception(res["error_msg"]);
-//      // return new User.map(res["user"]);
+//      // return new User.map(res["user"]);rdd
 //      return res["LoginStatus"];
 //      return res;
 //    });
@@ -155,20 +157,25 @@ class AuthModel extends ChangeNotifier {
 
     _status = _data["LoginStatus"];
 
-    if (_rememberMe && _status == 1) {
+    print(_status);
+
+    if (_rememberMe && _status != 0) {
       SharedPreferences.getInstance().then((prefs) {
         prefs.setString("saved_username", _username);
         prefs.setString("saved_password", _password);
       });
     }
     User _newUser = new User();
-    _newUser.id = 10;
-    _newUser.firstname = "Mr";
-    _newUser.lastname = "Doan";
+    //_newUser.id = 10;
+    //_newUser.firstname = "Mr";
+    //_newUser.lastname = "Doan";
+    _newUser.id =  _data["UserID"];
+    _newUser.firstname =  _data["Fullname"];
+    _newUser.lastname =  _data["Msg"];
 
     // Get Info For User
 //    User _newUser = await getInfo(uuid.v4().toString());
-    if (_status == 1) {
+    if (_status != 0) {
       _user = _newUser;
       notifyListeners();
 
