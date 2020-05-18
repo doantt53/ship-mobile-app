@@ -48,17 +48,17 @@ class _ChatPage extends State<ChatPage> {
   void initState() {
     super.initState();
 
+    SharedPreferences.getInstance().then((prefs) {
+      _phone_number = prefs.getString("phone_number_receive") ?? "";
+      print("_ChatPage => $_phone_number");
+    });
+
     BluetoothConnection.toAddress(widget.server.address).then((_connection) {
       print('Connected to the device');
       connection = _connection;
       setState(() {
         isConnecting = false;
         isDisconnecting = false;
-      });
-
-      SharedPreferences.getInstance().then((prefs) {
-        _phone_number = prefs.getString("phone_number_receive") ?? "";
-        print("_ChatPage => $_phone_number");
       });
 
       connection.input.listen(_onDataReceived).onDone(() {

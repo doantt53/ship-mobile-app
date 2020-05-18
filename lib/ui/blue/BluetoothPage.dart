@@ -256,59 +256,59 @@ class _BluetoothPage extends State<BluetoothPage> {
                 },
               ),
             ),
-//            Divider(),
-//            ListTile(title: const Text('Multiple connections example')),
-//            ListTile(
-//              title: RaisedButton(
-//                child: ((_collectingTask != null && _collectingTask.inProgress)
-//                    ? const Text('Disconnect and stop background collecting')
-//                    : const Text('Connect to start background collecting')),
-//                onPressed: () async {
-//                  if (_collectingTask != null && _collectingTask.inProgress) {
-//                    await _collectingTask.cancel();
-//                    setState(() {
-//                      /* Update for `_collectingTask.inProgress` */
-//                    });
-//                  } else {
-//                    final BluetoothDevice selectedDevice =
-//                    await Navigator.of(context).push(
-//                      MaterialPageRoute(
-//                        builder: (context) {
-//                          return SelectBondedDevicePage(
-//                              checkAvailability: false);
-//                        },
-//                      ),
-//                    );
-//
-//                    if (selectedDevice != null) {
-//                      await _startBackgroundTask(context, selectedDevice);
-//                      setState(() {
-//                        /* Update for `_collectingTask.inProgress` */
-//                      });
-//                    }
-//                  }
-//                },
-//              ),
-//            ),
-//            ListTile(
-//              title: RaisedButton(
-//                child: const Text('View background collected data'),
-//                onPressed: (_collectingTask != null)
-//                    ? () {
-//                  Navigator.of(context).push(
-//                    MaterialPageRoute(
-//                      builder: (context) {
-//                        return ScopedModel<BackgroundCollectingTask>(
-//                          model: _collectingTask,
-//                          child: BackgroundCollectedPage(),
-//                        );
-//                      },
-//                    ),
-//                  );
-//                }
-//                    : null,
-//              ),
-//            ),
+            Divider(),
+            ListTile(title: const Text('Multiple connections example')),
+            ListTile(
+              title: RaisedButton(
+                child: ((_collectingTask != null && _collectingTask.inProgress)
+                    ? const Text('Disconnect and stop background collecting')
+                    : const Text('Connect to start background collecting')),
+                onPressed: () async {
+                  if (_collectingTask != null && _collectingTask.inProgress) {
+                    await _collectingTask.cancel();
+                    setState(() {
+                      /* Update for `_collectingTask.inProgress` */
+                    });
+                  } else {
+                    final BluetoothDevice selectedDevice =
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SelectBondedDevicePage(
+                              checkAvailability: false);
+                        },
+                      ),
+                    );
+
+                    if (selectedDevice != null) {
+                      await _startBackgroundTask(context, selectedDevice);
+                      setState(() {
+                        /* Update for `_collectingTask.inProgress` */
+                      });
+                    }
+                  }
+                },
+              ),
+            ),
+            ListTile(
+              title: RaisedButton(
+                child: const Text('View background collected data'),
+                onPressed: (_collectingTask != null)
+                    ? () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ScopedModel<BackgroundCollectingTask>(
+                          model: _collectingTask,
+                          child: BackgroundCollectedPage(),
+                        );
+                      },
+                    ),
+                  );
+                }
+                    : null,
+              ),
+            ),
           ],
         ),
       ),

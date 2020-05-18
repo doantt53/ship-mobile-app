@@ -133,7 +133,8 @@ class AuthModel extends ChangeNotifier {
     int _status = 0;
 
     // TODO: API LOGIN CODE HERE
-    String _url = "http://tau.dvbk.vn/API_Ship/Login?loginname=$_username&pass=$_password&key=$key";
+    String _url = "http://tau.dvbk.vn/API_Ship/Login?loginname=$_username&pass=$_password$key";
+    print(_url);
 //    var _data = await http.get(_url);
 //    final String res = _data.body;
 //    _status = res["LoginStatus"];

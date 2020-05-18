@@ -27,10 +27,11 @@ class HomePage extends StatefulWidget {
 //////////////// Lấy dữ liệu từ API
 List<TiBaseModel> _postList = new List<TiBaseModel>();
 
-Future<List<TiBaseModel>> fetchTiBaseModel3() async {
-  print(URL_TIBASE);
-  final response = await http.get(URL_TIBASE);
-  print(URL_TIBASE);
+Future<List<TiBaseModel>> fetchTiBaseModel3(AuthModel _auth) async {
+  String id = _auth.user.id.toString();
+  String Url = URL_TIBASE+id+key;
+  print(Url);
+  final response = await http.get(Url);
   if (response.statusCode == 200) {
     // If the call to the server was successful, parse the JSON
     List<dynamic> values = new List<dynamic>();
@@ -120,7 +121,6 @@ class MapSampleState extends State<HomePage> {
   void _showListShip() {
     List<TiBaseModel> _postListS = new List<TiBaseModel>();
     _postListS = _postList;
-    print("ssssssssssssssssssssssssssssssssssssssss$_postList.length");
     print(_postList.length);
     int ShipCount = _postList.length;
     Dialog dialogWithImage = Dialog(
@@ -331,7 +331,7 @@ class MapSampleState extends State<HomePage> {
 
 
   BitmapDescriptor get deliveryIcon {
-    return BitmapDescriptor.fromAsset('assets/ship-move-3.png');
+    return BitmapDescriptor.fromAsset('assets/ship-move.png');
   }
 
   //BitmapDescriptor myIcon;
@@ -342,9 +342,9 @@ class MapSampleState extends State<HomePage> {
      // myIcon = onValue;
     //});
   //}
-  void setStateMaker() async {
+  void setStateMaker(AuthModel _auth) async {
     _postList = new List<TiBaseModel>();
-    fetchTiBaseModel3();
+    fetchTiBaseModel3(_auth);
     print(
         "================================================================================");
     print(_postList.length);
@@ -385,7 +385,7 @@ class MapSampleState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthModel>(context, listen: true);
-    setStateMaker();
+    setStateMaker(_auth);
     //_auth?.user?.firstname.toString() ?? "",
     return Scaffold(
       appBar: AppBar(
