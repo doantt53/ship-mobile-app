@@ -23,9 +23,8 @@
     <key>NSRemindersUsageDescription</key>
     <string>reminders</string>
 
-
-
-
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
 
 
 
