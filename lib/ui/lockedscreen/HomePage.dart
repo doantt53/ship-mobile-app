@@ -413,7 +413,7 @@ class MapSampleState extends State<HomePage> {
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
               target: _center,
-              zoom: 7.0,
+              zoom: 10.0,
             ),
             mapType: _currentMaptype,
             markers: _markers,
