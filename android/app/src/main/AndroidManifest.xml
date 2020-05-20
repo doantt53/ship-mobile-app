@@ -17,7 +17,7 @@
         android:label="Định vị tàu cá"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAl68YX2jY-GmoUgjlCR992rMFCNrbfWyU"/>
+            android:value="AIzaSyBvUCLuBvtrDJAFl71YyKFpCpVFiI7qwnY"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
