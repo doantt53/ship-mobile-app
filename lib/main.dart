@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:login/data/models/auth.dart';
 import 'package:login/ui/blue/BluetoothPage.dart';
-import 'package:login/ui/sms/SeeContactsButton.dart';
 import 'package:persist_theme/persist_theme.dart';
 import 'package:provider/provider.dart';
-
 import 'ui/lockedscreen/HomePage.dart';
 import 'ui/lockedscreen/SettingsPage.dart';
-import 'ui/signin/NewAccountPage.dart';
 import 'ui/signin/LoginPage.dart';
 
 void main() => runApp(MyApp());
@@ -66,33 +63,33 @@ class _MyAppState extends State<MyApp> {
 }
 
 
-class MyAppSMS extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Contacts Tutorial',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Contacts Tutorial'),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Center(
-        child: SeeContactsButton(),
-      ),
-    );
-  }
-}
+//class MyAppSMS extends StatelessWidget {
+//  // This widget is the root of your application.
+//  @override
+//  Widget build(BuildContext context) {
+//    return MaterialApp(
+//      title: 'Contacts Tutorial',
+//      theme: ThemeData(
+//        primarySwatch: Colors.blue,
+//      ),
+//      home: MyHomePage(title: 'Contacts Tutorial'),
+//    );
+//  }
+//}
+//
+//class MyHomePage extends StatelessWidget {
+//  MyHomePage({Key key, this.title}) : super(key: key);
+//  final String title;
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Scaffold(
+//      appBar: AppBar(
+//        title: Text(title),
+//      ),
+//      body: Center(
+//        child: SeeContactsButton(),
+//      ),
+//    );
+//  }
+//}

@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:login/ui/blue/BluetoothPage.dart';
-import 'package:login/ui/blue/ChatPage.dart';
-import 'package:login/ui/blue/SelectBondedDevicePage.dart';
-import 'package:login/ui/sms/ContactsPage.dart';
+import 'package:login/ui/contacts/ContactsPage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants.dart';
 import '../../data/models/auth.dart';
 import '../../utils/popUp.dart';
-import 'NewAccountPage.dart';
-// import 'forgot.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/cupertino.dart';
@@ -213,7 +207,7 @@ class LoginPageState extends State<LoginPage> {
           if (permissionStatus == PermissionStatus.granted) {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ContactsPage()));
+                MaterialPageRoute(builder: (context) => ContactsPage(title: 'Flutter Contacts')));
           } else {
             //If permissions have been denied show standard cupertino alert dialog
             showDialog(
