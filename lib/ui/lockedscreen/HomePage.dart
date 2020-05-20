@@ -30,23 +30,21 @@ List<TiBaseModel> _postList = new List<TiBaseModel>();
 Future<List<TiBaseModel>> fetchTiBaseModel3(AuthModel _auth) async {
   String id = _auth.user.id.toString();
   String Url = URL_TIBASE+id+key;
-  print(Url);
+//  print(Url);
   final response = await http.get(Url);
   if (response.statusCode == 200) {
     // If the call to the server was successful, parse the JSON
     List<dynamic> values = new List<dynamic>();
     values = json.decode(response.body);
-    print(values.length);
+//    print(values.length);
     if (values.length > 0) {
       //print(values[0]);
       for (int i = 0; i < values.length; i++) {
         if (values[i] != null) {
-          print(values[i]["TIBaseID"]);
+//          print(values[i]["TIBaseID"]);
           //if(values[i]["SpeedKnot"] == 0) {
           Map<String, dynamic> map = values[i];
           _postList.add(TiBaseModel.fromJson(map));
-          print(
-              "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
           //}
           //print('Id-------${map['Lt']}');
         }
@@ -345,9 +343,9 @@ class MapSampleState extends State<HomePage> {
   void setStateMaker(AuthModel _auth) async {
     _postList = new List<TiBaseModel>();
     fetchTiBaseModel3(_auth);
-    print(
-        "================================================================================");
-    print(_postList.length);
+//    print(
+//        "================================================================================");
+//    print(_postList.length);
 
     Future.delayed(const Duration(milliseconds: 5000), () {
       setState(() {
@@ -374,8 +372,8 @@ class MapSampleState extends State<HomePage> {
               }
               //icon:_setSourceIcon,
               ));
-          print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-          print(_postList[i].ShipName);
+//          print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+//          print(_postList[i].ShipName);
         }
       });
       // })
