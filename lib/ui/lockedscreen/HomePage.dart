@@ -45,8 +45,7 @@ Future<List<TiBaseModel>> fetchTiBaseModel3(AuthModel _auth) async {
           //if(values[i]["SpeedKnot"] == 0) {
           Map<String, dynamic> map = values[i];
           _postList.add(TiBaseModel.fromJson(map));
-          print(
-              "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+          print(values[i]["ShipName"]);
           //}
           //print('Id-------${map['Lt']}');
         }
@@ -345,8 +344,6 @@ class MapSampleState extends State<HomePage> {
   void setStateMaker(AuthModel _auth) async {
     _postList = new List<TiBaseModel>();
     fetchTiBaseModel3(_auth);
-    print(
-        "================================================================================");
     print(_postList.length);
 
     Future.delayed(const Duration(milliseconds: 5000), () {
@@ -374,7 +371,6 @@ class MapSampleState extends State<HomePage> {
               }
               //icon:_setSourceIcon,
               ));
-          print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
           print(_postList[i].ShipName);
         }
       });
