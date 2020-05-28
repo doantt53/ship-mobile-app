@@ -23,6 +23,9 @@
     <key>NSRemindersUsageDescription</key>
     <string>reminders</string>
 
+	<key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Our app uses bluetooth to find, connect and transfer data between different devices</string>
+
     <key>io.flutter.embedded_views_preview</key>
     <true/>
 
