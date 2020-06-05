@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:ship/ui/blue/SelectBondedDevicePage.dart';
 import '../contacts/ContactsPage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -203,28 +204,39 @@ class LoginPageState extends State<LoginPage> {
 //          } else {
 //            print('Connect -> no device selected');
 //          }
-          final PermissionStatus permissionStatus = await _getPermission();
-          if (permissionStatus == PermissionStatus.granted) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ContactsPage(title: 'Flutter Contacts')));
-          } else {
-            //If permissions have been denied show standard cupertino alert dialog
-            showDialog(
-                context: context,
-                builder: (BuildContext context) =>
-                    CupertinoAlertDialog(
-                      title: Text('Permissions error'),
-                      content: Text('Please enable contacts access '
-                          'permission in system settings'),
-                      actions: <Widget>[
-                        CupertinoDialogAction(
-                          child: Text('OK'),
-                          onPressed: () => Navigator.of(context).pop(),
-                        )
-                      ],
-                    ));
-          }
+
+
+
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return SelectBondedDevicePage(checkAvailability: false);
+              },
+            ),
+          );
+
+//          final PermissionStatus permissionStatus = await _getPermission();
+//          if (permissionStatus == PermissionStatus.granted) {
+//            Navigator.push(
+//                context,
+//                MaterialPageRoute(builder: (context) => ContactsPage(title: 'Flutter Contacts')));
+//          } else {
+//            //If permissions have been denied show standard cupertino alert dialog
+//            showDialog(
+//                context: context,
+//                builder: (BuildContext context) =>
+//                    CupertinoAlertDialog(
+//                      title: Text('Permissions error'),
+//                      content: Text('Please enable contacts access '
+//                          'permission in system settings'),
+//                      actions: <Widget>[
+//                        CupertinoDialogAction(
+//                          child: Text('OK'),
+//                          onPressed: () => Navigator.of(context).pop(),
+//                        )
+//                      ],
+//                    ));
+//          }
         },
         tooltip: 'Tin nhắn',
         child: Icon(Icons.message),
