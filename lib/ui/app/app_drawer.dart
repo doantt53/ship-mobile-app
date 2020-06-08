@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:login/constants.dart';
-import 'package:login/data/models/auth.dart';
-import 'package:flutter_whatsnew/flutter_whatsnew.dart';
-import 'package:login/ui/blue/ChatPage.dart';
-import 'package:login/ui/blue/SelectBondedDevicePage.dart';
-import 'package:login/ui/sms/ContactsPage.dart';
+import '../../constants.dart';
+import '../../data/models/auth.dart';
+import '../contacts/ContactsPage.dart';
 import 'package:provider/provider.dart';
 
 import 'package:permission_handler/permission_handler.dart';
@@ -130,11 +126,13 @@ class AppDrawer extends StatelessWidget {
 //                } else {
 //                  print('Connect -> no device selected');
 //                }
+
+
                 final PermissionStatus permissionStatus = await _getPermission();
                 if (permissionStatus == PermissionStatus.granted) {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ContactsPage()));
+                      MaterialPageRoute(builder: (context) => ContactsPage(title: 'Flutter Contacts')));
                 } else {
                   //If permissions have been denied show standard cupertino alert dialog
                   showDialog(

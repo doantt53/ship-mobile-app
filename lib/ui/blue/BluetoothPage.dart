@@ -136,7 +136,7 @@ class _BluetoothPage extends State<BluetoothPage> {
               title: _discoverableTimeoutSecondsLeft == 0
                   ? const Text("Discoverable")
                   : Text(
-                  "Discoverable for ${_discoverableTimeoutSecondsLeft}s"),
+                      "Discoverable for ${_discoverableTimeoutSecondsLeft}s"),
               subtitle: const Text("PsychoX-Luna"),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -166,23 +166,23 @@ class _BluetoothPage extends State<BluetoothPage> {
                         _discoverableTimeoutSecondsLeft = timeout;
                         _discoverableTimeoutTimer =
                             Timer.periodic(Duration(seconds: 1), (Timer timer) {
-                              setState(() {
-                                if (_discoverableTimeoutSecondsLeft < 0) {
-                                  FlutterBluetoothSerial.instance.isDiscoverable
-                                      .then((isDiscoverable) {
-                                    if (isDiscoverable) {
-                                      print(
-                                          "Discoverable after timeout... might be infinity timeout :F");
-                                      _discoverableTimeoutSecondsLeft += 1;
-                                    }
-                                  });
-                                  timer.cancel();
-                                  _discoverableTimeoutSecondsLeft = 0;
-                                } else {
-                                  _discoverableTimeoutSecondsLeft -= 1;
+                          setState(() {
+                            if (_discoverableTimeoutSecondsLeft < 0) {
+                              FlutterBluetoothSerial.instance.isDiscoverable
+                                  .then((isDiscoverable) {
+                                if (isDiscoverable) {
+                                  print(
+                                      "Discoverable after timeout... might be infinity timeout :F");
+                                  _discoverableTimeoutSecondsLeft += 1;
                                 }
                               });
-                            });
+                              timer.cancel();
+                              _discoverableTimeoutSecondsLeft = 0;
+                            } else {
+                              _discoverableTimeoutSecondsLeft -= 1;
+                            }
+                          });
+                        });
                       });
                     },
                   )
@@ -201,13 +201,13 @@ class _BluetoothPage extends State<BluetoothPage> {
                 });
                 if (value) {
                   FlutterBluetoothSerial.instance.setPairingRequestHandler(
-                          (BluetoothPairingRequest request) {
-                        print("Trying to auto-pair with Pin 1234");
-                        if (request.pairingVariant == PairingVariant.Pin) {
-                          return Future.value("1234");
-                        }
-                        return null;
-                      });
+                      (BluetoothPairingRequest request) {
+                    print("Trying to auto-pair with Pin 1234");
+                    if (request.pairingVariant == PairingVariant.Pin) {
+                      return Future.value("1234");
+                    }
+                    return null;
+                  });
                 } else {
                   FlutterBluetoothSerial.instance
                       .setPairingRequestHandler(null);
@@ -219,7 +219,7 @@ class _BluetoothPage extends State<BluetoothPage> {
                   child: const Text('Explore discovered devices'),
                   onPressed: () async {
                     final BluetoothDevice selectedDevice =
-                    await Navigator.of(context).push(
+                        await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
                           return DiscoveryPage();
@@ -239,7 +239,7 @@ class _BluetoothPage extends State<BluetoothPage> {
                 child: const Text('Connect to paired device to chat'),
                 onPressed: () async {
                   final BluetoothDevice selectedDevice =
-                  await Navigator.of(context).push(
+                      await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
                         return SelectBondedDevicePage(checkAvailability: false);
@@ -256,59 +256,59 @@ class _BluetoothPage extends State<BluetoothPage> {
                 },
               ),
             ),
-            Divider(),
-            ListTile(title: const Text('Multiple connections example')),
-            ListTile(
-              title: RaisedButton(
-                child: ((_collectingTask != null && _collectingTask.inProgress)
-                    ? const Text('Disconnect and stop background collecting')
-                    : const Text('Connect to start background collecting')),
-                onPressed: () async {
-                  if (_collectingTask != null && _collectingTask.inProgress) {
-                    await _collectingTask.cancel();
-                    setState(() {
-                      /* Update for `_collectingTask.inProgress` */
-                    });
-                  } else {
-                    final BluetoothDevice selectedDevice =
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return SelectBondedDevicePage(
-                              checkAvailability: false);
-                        },
-                      ),
-                    );
-
-                    if (selectedDevice != null) {
-                      await _startBackgroundTask(context, selectedDevice);
-                      setState(() {
-                        /* Update for `_collectingTask.inProgress` */
-                      });
-                    }
-                  }
-                },
-              ),
-            ),
-            ListTile(
-              title: RaisedButton(
-                child: const Text('View background collected data'),
-                onPressed: (_collectingTask != null)
-                    ? () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ScopedModel<BackgroundCollectingTask>(
-                          model: _collectingTask,
-                          child: BackgroundCollectedPage(),
-                        );
-                      },
-                    ),
-                  );
-                }
-                    : null,
-              ),
-            ),
+//            Divider(),
+//            ListTile(title: const Text('Multiple connections example')),
+//            ListTile(
+//              title: RaisedButton(
+//                child: ((_collectingTask != null && _collectingTask.inProgress)
+//                    ? const Text('Disconnect and stop background collecting')
+//                    : const Text('Connect to start background collecting')),
+//                onPressed: () async {
+//                  if (_collectingTask != null && _collectingTask.inProgress) {
+//                    await _collectingTask.cancel();
+//                    setState(() {
+//                      /* Update for `_collectingTask.inProgress` */
+//                    });
+//                  } else {
+//                    final BluetoothDevice selectedDevice =
+//                    await Navigator.of(context).push(
+//                      MaterialPageRoute(
+//                        builder: (context) {
+//                          return SelectBondedDevicePage(
+//                              checkAvailability: false);
+//                        },
+//                      ),
+//                    );
+//
+//                    if (selectedDevice != null) {
+//                      await _startBackgroundTask(context, selectedDevice);
+//                      setState(() {
+//                        /* Update for `_collectingTask.inProgress` */
+//                      });
+//                    }
+//                  }
+//                },
+//              ),
+//            ),
+//            ListTile(
+//              title: RaisedButton(
+//                child: const Text('View background collected data'),
+//                onPressed: (_collectingTask != null)
+//                    ? () {
+//                  Navigator.of(context).push(
+//                    MaterialPageRoute(
+//                      builder: (context) {
+//                        return ScopedModel<BackgroundCollectingTask>(
+//                          model: _collectingTask,
+//                          child: BackgroundCollectedPage(),
+//                        );
+//                      },
+//                    ),
+//                  );
+//                }
+//                    : null,
+//              ),
+//            ),
           ],
         ),
       ),
@@ -326,9 +326,9 @@ class _BluetoothPage extends State<BluetoothPage> {
   }
 
   Future<void> _startBackgroundTask(
-      BuildContext context,
-      BluetoothDevice server,
-      ) async {
+    BuildContext context,
+    BluetoothDevice server,
+  ) async {
     try {
       _collectingTask = await BackgroundCollectingTask.connect(server);
       await _collectingTask.start();

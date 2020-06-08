@@ -580,7 +580,7 @@ class _MyDialogState extends State<_MyDialog> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   DropdownButton(
-                    hint: Text('Chọn biển số'), // Not necessary for Option 1
+                    hint: Text('Chọn biển số tàu xem hành trình'), // Not necessary for Option 1
                     value: _selectedShipValue,
                     items: buildDropdownMenuItems(_postList),
                     onChanged: onChangeDropdownItem,
