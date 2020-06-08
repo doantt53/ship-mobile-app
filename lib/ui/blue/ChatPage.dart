@@ -257,7 +257,8 @@ class _ChatPage extends State<ChatPage> {
 
     if (text.length > 0) {
       try {
-        String send = "\$MES_$_phone_number" + "_" + text + "\r\n";
+        //String send = "\$MES_$_phone_number"+ text + "\r\n";
+        String send = "\$MES_AB"+ text + "\r\n";
         print(send);
 
         connection.output.add(utf8.encode(send));
