@@ -205,8 +205,11 @@ class LoginPageState extends State<LoginPage> {
 //            print('Connect -> no device selected');
 //          }
 
-
-
+//<<<<<<< HEAD
+//
+//
+//=======
+//>>>>>>> origin/master
           await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
@@ -215,6 +218,10 @@ class LoginPageState extends State<LoginPage> {
             ),
           );
 
+//<<<<<<< HEAD
+//=======
+//
+//>>>>>>> origin/master
 //          final PermissionStatus permissionStatus = await _getPermission();
 //          if (permissionStatus == PermissionStatus.granted) {
 //            Navigator.push(
