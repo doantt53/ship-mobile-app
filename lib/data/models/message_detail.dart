@@ -1,38 +1,44 @@
-class Message {
+class MessageDetail {
   int _id;
+  int _msgId;
   String _name;
   String _message;
+  int _msgIn;
 
-  Message(this._name, this._message);
+  MessageDetail(this._msgId, this._name, this._message, this._msgIn);
 
-  Message.map(dynamic obj) {
+  MessageDetail.map(dynamic obj) {
     this._id = obj['id'];
+    this._msgId = obj['msgId'];
     this._name = obj['name'];
     this._message = obj['message'];
+    this._msgIn = obj['msgIn'];
   }
 
   int get id => _id;
+  int get msgId => _msgId;
   String get name => _name;
   String get message => _message;
-
-//  set id(int _id) => _id = _id;
-//  set name(String _name) => _name = _name;
-//  set message(String _message) => _message = _message;
+  int get msgIn => _msgIn;
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
     if (_id != null) {
       map['id'] = _id;
     }
+    map['msgId'] = _msgId;
     map['name'] = _name;
     map['message'] = _message;
+    map['msgIn'] = _msgIn;
 
     return map;
   }
 
-  Message.fromMap(Map<String, dynamic> map) {
+  MessageDetail.fromMap(Map<String, dynamic> map) {
     this._id = map['id'];
+    this._msgId = map['msgId'];
     this._name = map['name'];
     this._message = map['message'];
+    this._msgIn = map['msgIn'];
   }
 }

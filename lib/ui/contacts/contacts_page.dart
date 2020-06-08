@@ -2,10 +2,6 @@ import 'dart:math';
 
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import '../blue/ChatPage.dart';
-import '../blue/SelectBondedDevicePage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactsPage extends StatefulWidget {
   ContactsPage({Key key, this.title}) : super(key: key);
@@ -192,29 +188,32 @@ class _ContactsPageState extends State<ContactsPage> {
                             .replaceAll(RegExp(r"[^\w]"), "");
                         print("Data: $number");
 
-                        // Store phone number receive
-                        SharedPreferences.getInstance().then((prefs) {
-                          prefs.setString("phone_number_receive", number);
-                        });
+                        // Return contact selected
+                        Navigator.of(context).pop(selected);
 
-                        final BluetoothDevice selectedDevice = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return SelectBondedDevicePage(checkAvailability: false);
-                            },
-                          ),
-                        );
+//                        // Store phone number receive
+//                        SharedPreferences.getInstance().then((prefs) {
+//                          prefs.setString("phone_number_receive", number);
+//                        });
+//
+//                        final BluetoothDevice selectedDevice = await Navigator.of(context).push(
+//                          MaterialPageRoute(
+//                            builder: (context) {
+//                              return SelectBondedDevicePage(checkAvailability: false);
+//                            },
+//                          ),
+//                        );
 
-                        if (selectedDevice != null) {
-                          print('Connect -> selected ' + selectedDevice.address);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) {
-                              return ChatPage(server: selectedDevice);
-                            },
-                          ));
-                        } else {
-                          print('Connect -> no device selected');
-                        }
+//                        if (selectedDevice != null) {
+//                          print('Connect -> selected ' + selectedDevice.address);
+//                          Navigator.of(context).push(MaterialPageRoute(
+//                            builder: (context) {
+//                              return ChatPage(server: selectedDevice);
+//                            },
+//                          ));
+//                        } else {
+//                          print('Connect -> no device selected');
+//                        }
 
                       },
                       title: Text(contact.displayName),
@@ -318,4 +317,6 @@ class _ContactsPageState extends State<ContactsPage> {
       ),
     );
   }
+
+
 }

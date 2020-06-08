@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:ship/ui/blue/SelectBondedDevicePage.dart';
-import '../contacts/ContactsPage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants.dart';
@@ -210,13 +208,13 @@ class LoginPageState extends State<LoginPage> {
 //
 //=======
 //>>>>>>> origin/master
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return SelectBondedDevicePage(checkAvailability: false);
-              },
-            ),
-          );
+//          await Navigator.of(context).push(
+//            MaterialPageRoute(
+//              builder: (context) {
+//                return SelectBondedDevicePage(checkAvailability: false);
+//              },
+//            ),
+//          );
 
 //<<<<<<< HEAD
 //=======

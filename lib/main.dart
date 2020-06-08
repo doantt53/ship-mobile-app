@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ship/ui/blue/bluetooth.dart';
 import 'data/models/auth.dart';
-import 'ui/blue/BluetoothPage.dart';
 import 'package:persist_theme/persist_theme.dart';
 import 'package:provider/provider.dart';
 import 'ui/lockedscreen/HomePage.dart';
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
               "/home": (BuildContext context) => HomePage(),
               "/settings": (BuildContext context) => SettingsPage(),
 //              "/create": (BuildContext context) => CreateAccount(),
-              "/bluetooth": (BuildContext context) => BluetoothPage(),
+              "/bluetooth": (BuildContext context) => FlutterBlueApp(),
 //              "/contacts": (BuildContext context) => SeeContactsButton(),
             },
           ),
