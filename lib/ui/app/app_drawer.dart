@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ship/ui/blue/bluetooth.dart';
+import 'package:ship/ui/lockedscreen/SettingsPage.dart';
 import '../../constants.dart';
 import '../../data/models/auth.dart';
 import 'package:provider/provider.dart';
@@ -24,9 +25,9 @@ class AppDrawer extends StatelessWidget {
                 maxLines: 1,
               ),
               //subtitle: Text(
-                //_auth.user.id.toString(),
-               // textScaleFactor: textScaleFactor,
-                //maxLines: 1,
+              //_auth.user.id.toString(),
+              // textScaleFactor: textScaleFactor,
+              //maxLines: 1,
               //),
               // onTap: () {
               //   Navigator.of(context).popAndPushNamed("/myaccount");
@@ -72,8 +73,15 @@ class AppDrawer extends StatelessWidget {
                 'Cài đặt',
                 textScaleFactor: textScaleFactor,
               ),
-              onTap: () {
-                Navigator.of(context).popAndPushNamed("/settings");
+              onTap: () async {
+//                Navigator.of(context).popAndPushNamed("/settings");
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SettingsPage();
+                    },
+                  ),
+                );
               },
             ),
             Divider(height: 1.0),
@@ -88,17 +96,24 @@ class AppDrawer extends StatelessWidget {
 //              },
 //            ),
 //            Divider(height: 1.0),
-            ListTile(
-              leading: Icon(Icons.bluetooth),
-              title: Text(
-                'Bluetooths',
-                textScaleFactor: textScaleFactor,
-              ),
-              onTap: () {
-                Navigator.of(context).popAndPushNamed("/bluetooth");
-              },
-            ),
-            Divider(height: 1.0),
+//            ListTile(
+//              leading: Icon(Icons.bluetooth),
+//              title: Text(
+//                'Bluetooths',
+//                textScaleFactor: textScaleFactor,
+//              ),
+//              onTap: () async {
+////                Navigator.of(context).popAndPushNamed("/bluetooth");
+//                await Navigator.of(context).push(
+//                  MaterialPageRoute(
+//                    builder: (context) {
+//                      return FindDevicesScreen();
+//                    },
+//                  ),
+//                );
+//              },
+//            ),
+//            Divider(height: 1.0),
             ListTile(
               leading: Icon(Icons.message),
               title: Text(
@@ -109,11 +124,10 @@ class AppDrawer extends StatelessWidget {
                 await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return FlutterBlueApp();
+                      return FindDevicesScreen();
                     },
                   ),
                 );
-
 
 //                final BluetoothDevice selectedDevice =
 //                await Navigator.of(context).push(
@@ -134,7 +148,6 @@ class AppDrawer extends StatelessWidget {
 //                } else {
 //                  print('Connect -> no device selected');
 //                }
-
 
 //                final PermissionStatus permissionStatus = await _getPermission();
 //                if (permissionStatus == PermissionStatus.granted) {
@@ -174,7 +187,6 @@ class AppDrawer extends StatelessWidget {
       ),
     );
   }
-
 
 //  Future<PermissionStatus> _getPermission() async {
 //    final PermissionStatus permission = await PermissionHandler()

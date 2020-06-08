@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
               "/home": (BuildContext context) => HomePage(),
               "/settings": (BuildContext context) => SettingsPage(),
 //              "/create": (BuildContext context) => CreateAccount(),
-              "/bluetooth": (BuildContext context) => FlutterBlueApp(),
+//              "/bluetooth": (BuildContext context) => FlutterBlueApp(),
 //              "/contacts": (BuildContext context) => SeeContactsButton(),
             },
           ),

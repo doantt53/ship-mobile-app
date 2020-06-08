@@ -43,8 +43,11 @@ class LoginPageState extends State<LoginPage> {
       var _username = _prefs.getString("saved_username") ?? "";
       var _remeberMe = _prefs.getBool("remember_me") ?? false;
 
+      var _password = _prefs.getString("saved_password") ?? "";
+
       if (_remeberMe) {
         _controllerUsername.text = _username ?? "";
+        _controllerPassword.text = _password ?? "";
       }
     } catch (e) {
       print(e);
@@ -186,7 +189,7 @@ class LoginPageState extends State<LoginPage> {
           await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return FlutterBlueApp();
+                return FindDevicesScreen();
               },
             ),
           );
