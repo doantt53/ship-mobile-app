@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ship/ui/blue/bluetooth.dart';
 import '../../constants.dart';
 import '../../data/models/auth.dart';
 import '../../utils/popUp.dart';
@@ -182,6 +183,15 @@ class LoginPageState extends State<LoginPage> {
       floatingActionButton: FloatingActionButton(
         // onPressed: _incrementCounter,
         onPressed: () async {
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return FlutterBlueApp();
+              },
+            ),
+          );
+
+
 //          // Add your onPressed code here!
 //          final BluetoothDevice selectedDevice =
 //          await Navigator.of(context).push(
