@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:ship/data/models/ContactShip.dart';
 import 'package:ship/data/models/message.dart';
 import 'package:ship/data/models/message_detail.dart';
 import 'package:ship/ui/contacts/contacts_page.dart';
@@ -185,17 +186,17 @@ class _ChatPage extends State<ChatPage> {
                 final PermissionStatus permissionStatus =
                     await _getPermission();
                 if (permissionStatus == PermissionStatus.granted) {
-                  Contact selected = await Navigator.push(
+                  ContactShip selected = await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               ContactsPage(title: 'Flutter Contacts')));
                   if (selected != null) {
-                    this.displayName = selected.displayName;
-                    this.phoneNumber = selected.phones
-                        .elementAt(0)
-                        .value
-                        .replaceAll(RegExp(r"[^\w]"), "");
+                    this.displayName = selected.Phone;
+                    this.phoneNumber = selected.Code.toString();
+//                        .elementAt(0)
+//                        .value
+//                        .replaceAll(RegExp(r"[^\w]"), "");
                     print("SĐT: $phoneNumber");
                     setState(() {
                       isConnected = true;
