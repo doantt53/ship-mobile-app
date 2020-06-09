@@ -17,6 +17,7 @@ class Message {
 
 //  set id(int _id) => _id = _id;
 //  set name(String _name) => _name = _name;
+//  set name(String _name) => _name = _name;
 //  set message(String _message) => _message = _message;
 
   Map<String, dynamic> toMap() {

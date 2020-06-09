@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ship/data/models/ContactShip.dart';
 import 'package:ship/data/models/message.dart';
 import 'package:ship/data/models/message_detail.dart';
 import 'package:sqflite/sqflite.dart';
@@ -20,6 +21,15 @@ class DatabaseHelper {
   final String tableMessageDetail = 'messageDetailTable';
   final String columnMsgId = 'msgId';
   final String columnMsgIn = 'msgIn';
+
+  // Table ContactShip
+  final String tableContactShip = 'messageContactShip';
+  final String columnContactID = 'contactID';
+  final String columnDeviceID = 'deviceID';
+  final String columnCode = 'code';
+  final String columnPhone = 'phone';
+  final String columnDateCreate = 'dateCreate';
+
 
   static Database _db;
 
@@ -49,6 +59,11 @@ class DatabaseHelper {
     // Create table messageTable
     await db.execute(
         'CREATE TABLE $tableMessageDetail($columnId INTEGER PRIMARY KEY, $columnMsgId INTEGER, $columnName TEXT, $columnMessage TEXT, $columnMsgIn INTEGER)');
+
+    // Create table ContactShip
+    await db.execute(
+        'CREATE TABLE $tableContactShip($columnId INTEGER PRIMARY KEY, $columnContactID INTEGER, $columnDeviceID INTEGER, $columnCode INTEGER, $columnPhone TEXT, $columnDateCreate TEXT, $columnName TEXT)');
+
   }
 
   Future<int> saveMessage(Message note) async {
@@ -174,5 +189,56 @@ class DatabaseHelper {
 //    return await dbClient.update(tableMessage, note.toMap(), where: "$columnId = ?", whereArgs: [note.id]);
 ////    return await dbClient.rawUpdate(
 ////        'UPDATE $tableNote SET $columnTitle = \'${note.title}\', $columnDescription = \'${note.description}\' WHERE $columnId = ${note.id}');
+//  }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Future<int> saveContactDetail(ContactShip _contact) async {
+    var dbClient = await db;
+    var result = await dbClient.insert(tableContactShip, _contact.toMap());
+    return result;
+  }
+
+  Future<List> getAllContacts() async {
+    var dbClient = await db;
+    var result = await dbClient.query(tableContactShip, columns: [columnId, columnContactID, columnDeviceID, columnCode, columnPhone, columnDateCreate, columnName]);
+    return result.toList();
+  }
+
+  Future<int> deleteAllContacts() async {
+    var dbClient = await db;
+    return await dbClient.delete(tableContactShip);
+  }
+
+  Future<int> getCountContacts() async {
+    var dbClient = await db;
+    return Sqflite.firstIntValue(await dbClient.rawQuery('SELECT COUNT(*) FROM $tableContactShip'));
+  }
+
+//  Future<List> getDetailContact(int _msgId) async {
+//    var dbClient = await db;
+//    var result = await dbClient.query(tableMessageDetail,
+//        columns: [columnId, columnMsgId, columnName, columnMessage, columnMsgIn],
+//        where: '$columnMsgId = ?',
+//        whereArgs: [_msgId]);
+//    return result.toList();
+//  }
+//
+//  Future<int> getCountMessageDetails() async {
+//    var dbClient = await db;
+//    return Sqflite.firstIntValue(await dbClient.rawQuery('SELECT COUNT(*) FROM $tableMessageDetail'));
+//  }
+//
+//  Future<Message> getMessageDetailWithId(int id) async {
+//    var dbClient = await db;
+//    List<Map> result = await dbClient.query(tableMessage,
+//        columns: [columnId, columnMsgId, columnName, columnMessage, columnMsgIn],
+//        where: '$columnId = ?',
+//        whereArgs: [id]);
+//
+//    if (result.length > 0) {
+//      return new Message.fromMap(result.first);
+//    }
+//
+//    return null;
 //  }
 }

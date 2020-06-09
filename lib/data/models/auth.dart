@@ -159,23 +159,22 @@ class AuthModel extends ChangeNotifier {
 
     _status = _data["LoginStatus"];
 
+
+    User _newUser = new User();
+    _newUser.id =  _data["UserID"];
+    _newUser.firstname =  _data["Fullname"];
+    _newUser.lastname =  _data["Msg"];
+
     print(_status);
     if (_rememberMe && _status > 0) {
       SharedPreferences.getInstance().then((prefs) {
         prefs.setString("saved_username", _username);
         prefs.setString("saved_password", _password);
+        prefs.setString("saved_user_id", _newUser.id.toString());
       });
     }
-    User _newUser = new User();
-    //_newUser.id = 10;
-    //_newUser.firstname = "Mr";
-    //_newUser.lastname = "Doan";
-    _newUser.id =  _data["UserID"];
-    _newUser.firstname =  _data["Fullname"];
-    _newUser.lastname =  _data["Msg"];
 
     // Get Info For User
-//    User _newUser = await getInfo(uuid.v4().toString());
     if (_status > 0) {
       _user = _newUser;
       notifyListeners();
@@ -186,11 +185,6 @@ class AuthModel extends ChangeNotifier {
         prefs.setString("user_data", _save);
       });
     }
-//
-//    if (_newUser?.token == null || _newUser.token.isEmpty) return false;
-//    print("Login status $_status");
-
-
     if (_status <= 0) return false;
 
     return true;

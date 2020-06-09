@@ -3,7 +3,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ship/data/models/ContactShip.dart';
 import 'package:ship/ui/blue/bluetooth.dart';
+import 'package:ship/ui/blue/chat_page.dart';
 import 'package:ship/ui/contacts/contacts_pages_ship.dart';
 import '../../constants.dart';
 import '../../data/models/auth.dart';
@@ -45,6 +47,7 @@ class LoginPageState extends State<LoginPage> {
       var _remeberMe = _prefs.getBool("remember_me") ?? false;
 
       var _password = _prefs.getString("saved_password") ?? "";
+      var userID = _prefs.getString("userid") ?? "";
 
       if (_remeberMe) {
         _controllerUsername.text = _username ?? "";
@@ -85,7 +88,7 @@ class LoginPageState extends State<LoginPage> {
                     title: TextFormField(
                       decoration: InputDecoration(labelText: 'Tên đăng nhập'),
                       validator: (val) =>
-                      val.length < 1 ? 'Vui lòng nhập tên đăng nhập' : null,
+                          val.length < 1 ? 'Vui lòng nhập tên đăng nhập' : null,
                       onSaved: (val) => _username = val,
                       obscureText: false,
                       keyboardType: TextInputType.text,
@@ -97,7 +100,7 @@ class LoginPageState extends State<LoginPage> {
                     title: TextFormField(
                       decoration: InputDecoration(labelText: 'Mật khẩu'),
                       validator: (val) =>
-                      val.length < 1 ? 'Vui lòng nhập mật khẩu' : null,
+                          val.length < 1 ? 'Vui lòng nhập mật khẩu' : null,
                       onSaved: (val) => _password = val,
                       obscureText: true,
                       controller: _controllerPassword,
@@ -190,11 +193,11 @@ class LoginPageState extends State<LoginPage> {
           await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return FindDevicesScreen();
+                return FindDevicesScreen(false);
+//                return ContactsShipPage(false);
               },
             ),
           );
-
 
 //          // Add your onPressed code here!
 //          final BluetoothDevice selectedDevice =
@@ -268,8 +271,8 @@ class LoginPageState extends State<LoginPage> {
         .checkPermissionStatus(PermissionGroup.contacts);
     if (permission != PermissionStatus.granted) {
       final Map<PermissionGroup, PermissionStatus> permissionStatus =
-      await PermissionHandler()
-          .requestPermissions([PermissionGroup.contacts]);
+          await PermissionHandler()
+              .requestPermissions([PermissionGroup.contacts]);
       return permissionStatus[PermissionGroup.contacts] ??
           PermissionStatus.unknown;
     } else {

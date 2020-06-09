@@ -7,8 +7,9 @@ import 'note_screen.dart';
 
 class ListViewMessage extends StatefulWidget {
   final BluetoothDevice device;
+  final bool isLogin;
 
-  ListViewMessage({this.device});
+  ListViewMessage(this.isLogin, this.device);
 
   @override
   _ListViewMessageState createState() => new _ListViewMessageState();
@@ -33,9 +34,7 @@ class _ListViewMessageState extends State<ListViewMessage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'JSA ListView Demo',
-      home: Scaffold(
+        return Scaffold(
         appBar: AppBar(
           title: Text('Danh sách tin nhắn'),
 //          centerTitle: true,
@@ -65,7 +64,7 @@ class _ListViewMessageState extends State<ListViewMessage> {
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ChatPage(widget.device,
+                                builder: (context) => ChatPage(widget.isLogin, widget.device,
                                     items[position].id, items[position].name)),
                           );
 //                        _navigateToNote(context, items[position]);
@@ -80,7 +79,7 @@ class _ListViewMessageState extends State<ListViewMessage> {
           onPressed: () async {
             await Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ChatPage(widget.device, -1, "")),
+              MaterialPageRoute(builder: (context) => ChatPage(widget.isLogin, widget.device, -1, "")),
             );
 
 //            Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -93,8 +92,7 @@ class _ListViewMessageState extends State<ListViewMessage> {
 //    => _createNewNote(context)
           },
         ),
-      ),
-    );
+      );
   }
 
   void _deleteNote(BuildContext context, Message note, int position) async {

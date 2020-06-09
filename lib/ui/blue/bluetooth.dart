@@ -14,24 +14,24 @@ import 'package:flutter_blue/flutter_blue.dart';
 //  runApp(FlutterBlueApp());
 //}
 
-class FlutterBlueApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      color: Colors.lightBlue,
-      home: StreamBuilder<BluetoothState>(
-          stream: FlutterBlue.instance.state,
-          initialData: BluetoothState.unknown,
-          builder: (c, snapshot) {
-            final state = snapshot.data;
-            if (state == BluetoothState.on) {
-              return FindDevicesScreen();
-            }
-            return BluetoothOffScreen(state: state);
-          }),
-    );
-  }
-}
+//class FlutterBlueApp extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    return MaterialApp(
+//      color: Colors.lightBlue,
+//      home: StreamBuilder<BluetoothState>(
+//          stream: FlutterBlue.instance.state,
+//          initialData: BluetoothState.unknown,
+//          builder: (c, snapshot) {
+//            final state = snapshot.data;
+//            if (state == BluetoothState.on) {
+//              return FindDevicesScreen();
+//            }
+//            return BluetoothOffScreen(state: state);
+//          }),
+//    );
+//  }
+//}
 
 class BluetoothOffScreen extends StatelessWidget {
   const BluetoothOffScreen({Key key, this.state}) : super(key: key);
@@ -67,6 +67,10 @@ class BluetoothOffScreen extends StatelessWidget {
 }
 
 class FindDevicesScreen extends StatelessWidget {
+  final bool isLogin;
+
+  FindDevicesScreen(this.isLogin);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,7 +118,8 @@ class FindDevicesScreen extends StatelessWidget {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    ListViewMessage(device: d)));
+                                                    ListViewMessage(
+                                                        isLogin, d)));
                                       }
 //                                    => Navigator.of(context).push(
 //                                        MaterialPageRoute(
@@ -141,7 +146,7 @@ class FindDevicesScreen extends StatelessWidget {
                           onTap: () => Navigator.of(context)
                               .push(MaterialPageRoute(builder: (context) {
                             r.device.connect();
-                            return ListViewMessage(device: r.device);
+                            return ListViewMessage(isLogin, r.device);
                           })),
 //                          => Navigator.of(context)
 //                              .push(MaterialPageRoute(builder: (context) {
@@ -179,68 +184,68 @@ class FindDevicesScreen extends StatelessWidget {
   }
 }
 
-class DeviceScreen extends StatelessWidget {
-  const DeviceScreen({Key key, this.device}) : super(key: key);
-
-  final BluetoothDevice device;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(device.name), actions: <Widget>[
-        StreamBuilder<BluetoothDeviceState>(
-          stream: device.state,
-          initialData: BluetoothDeviceState.connecting,
-          builder: (c, snapshot) {
-            VoidCallback onPressed;
-            String text;
-            switch (snapshot.data) {
-              case BluetoothDeviceState.connected:
-                onPressed = () => device.disconnect();
-                text = 'DISCONNECT';
-                break;
-              case BluetoothDeviceState.disconnected:
-                onPressed = () => device.connect();
-                text = 'CONNECT';
-                break;
-              default:
-                onPressed = null;
-                text = snapshot.data.toString().substring(21).toUpperCase();
-                break;
-            }
-            return FlatButton(
-                onPressed: onPressed,
-                child: Text(
-                  text,
-                  style: Theme.of(context)
-                      .primaryTextTheme
-                      .button
-                      .copyWith(color: Colors.white),
-                ));
-          },
-        )
-      ]),
-      body: Center(
-        child: Text('Hello World'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          List<BluetoothService> services = await device.discoverServices();
-          services.forEach((service) {
-            List<BluetoothCharacteristic> blueChar = service.characteristics;
-            blueChar.forEach((f) async {
-              if (f.uuid.toString().startsWith("0000ffe2", 0) == true ||
-                  f.uuid.toString().startsWith("0000ffe1", 0) == true) {
-                await f.write(utf8.encode("\$MES_0973708251_Cong hoa xa hoi"),
-                    withoutResponse: true);
-                print("Characteristice =  ${f.uuid}");
-              }
-            });
-          });
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
+//class DeviceScreen extends StatelessWidget {
+//  const DeviceScreen({Key key, this.device}) : super(key: key);
+//
+//  final BluetoothDevice device;
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Scaffold(
+//      appBar: AppBar(title: Text(device.name), actions: <Widget>[
+//        StreamBuilder<BluetoothDeviceState>(
+//          stream: device.state,
+//          initialData: BluetoothDeviceState.connecting,
+//          builder: (c, snapshot) {
+//            VoidCallback onPressed;
+//            String text;
+//            switch (snapshot.data) {
+//              case BluetoothDeviceState.connected:
+//                onPressed = () => device.disconnect();
+//                text = 'DISCONNECT';
+//                break;
+//              case BluetoothDeviceState.disconnected:
+//                onPressed = () => device.connect();
+//                text = 'CONNECT';
+//                break;
+//              default:
+//                onPressed = null;
+//                text = snapshot.data.toString().substring(21).toUpperCase();
+//                break;
+//            }
+//            return FlatButton(
+//                onPressed: onPressed,
+//                child: Text(
+//                  text,
+//                  style: Theme.of(context)
+//                      .primaryTextTheme
+//                      .button
+//                      .copyWith(color: Colors.white),
+//                ));
+//          },
+//        )
+//      ]),
+//      body: Center(
+//        child: Text('Hello World'),
+//      ),
+//      floatingActionButton: FloatingActionButton(
+//        onPressed: () async {
+//          List<BluetoothService> services = await device.discoverServices();
+//          services.forEach((service) {
+//            List<BluetoothCharacteristic> blueChar = service.characteristics;
+//            blueChar.forEach((f) async {
+//              if (f.uuid.toString().startsWith("0000ffe2", 0) == true ||
+//                  f.uuid.toString().startsWith("0000ffe1", 0) == true) {
+//                await f.write(utf8.encode("\$MES_0973708251_Cong hoa xa hoi"),
+//                    withoutResponse: true);
+//                print("Characteristice =  ${f.uuid}");
+//              }
+//            });
+//          });
+//        },
+//        tooltip: 'Increment',
+//        child: Icon(Icons.add),
+//      ),
+//    );
+//  }
+//}

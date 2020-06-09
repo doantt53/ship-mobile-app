@@ -124,7 +124,7 @@ class AppDrawer extends StatelessWidget {
                 await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return FindDevicesScreen();
+                      return FindDevicesScreen(true);
                     },
                   ),
                 );

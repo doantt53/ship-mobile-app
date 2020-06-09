@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -10,16 +9,19 @@ import 'package:ship/data/models/ContactShip.dart';
 import 'package:ship/data/models/message.dart';
 import 'package:ship/data/models/message_detail.dart';
 import 'package:ship/ui/contacts/contacts_page.dart';
+import 'package:ship/ui/contacts/contacts_pages_ship.dart';
 import 'package:ship/utils/database_helper.dart';
 
 class ChatPage extends StatefulWidget {
   final BluetoothDevice device;
 
+  bool isLogin;
+
   int msgId;
 
   String displayName;
 
-  ChatPage(this.device, this.msgId, this.displayName);
+  ChatPage(this.isLogin, this.device, this.msgId, this.displayName);
 
   @override
   _ChatPage createState() => new _ChatPage();
@@ -33,6 +35,8 @@ class _Message {
 }
 
 class _ChatPage extends State<ChatPage> {
+  bool isLogin;
+
   DatabaseHelper db = new DatabaseHelper();
 
   List<MessageDetail> messages = List<MessageDetail>();
@@ -66,8 +70,8 @@ class _ChatPage extends State<ChatPage> {
   void initState() {
     super.initState();
 
+    this.isLogin = widget.isLogin;
     this.device = widget.device;
-
     this.msgId = widget.msgId;
     this.displayName = widget.displayName;
 
@@ -87,65 +91,6 @@ class _ChatPage extends State<ChatPage> {
 
     getBluetoothCharacteristic();
   }
-
-//  @override
-//  void initState() {
-//    super.initState();
-
-//    SharedPreferences.getInstance().then((prefs) {
-//      _phone_number = prefs.getString("phone_number_receive") ?? "";
-//      print("_ChatPage => $_phone_number");
-//    });
-//
-//    BluetoothConnection.toAddress(widget.server.address).then((_connection) {
-//      print('Connected to the device');
-//      connection = _connection;
-//      setState(() {
-//        isConnecting = false;
-//        isDisconnecting = false;
-//      });
-
-//      connection.input.listen(_onDataReceived).onDone(() {
-//        // Example: Detect which side closed the connection
-//        // There should be `isDisconnecting` flag to show are we are (locally)
-//        // in middle of disconnecting process, should be set before calling
-//        // `dispose`, `finish` or `close`, which all causes to disconnect.
-//        // If we except the disconnection, `onDone` should be fired as result.
-//        // If we didn't except this (no flag set), it means closing by remote.
-//        if (isDisconnecting) {
-//          print('Disconnecting locally!');
-//        } else {
-//          print('Disconnected remotely!');
-//        }
-//        if (this.mounted) {
-//          setState(() {});
-//        }
-//      });
-//    }).catchError((error) {
-//      print('Cannot connect, exception occured');
-//      print(error);
-//    });
-//  }
-
-//  @override
-//  void dispose() {
-//    // Avoid memory leak (`setState` after dispose) and disconnect
-//    if (isConnected) {
-//      isDisconnecting = true;
-//      connection.dispose();
-//      connection = null;
-//    }
-//
-//    super.dispose();
-//  }
-
-//  @override
-//  void initState() {
-//    super.initState();
-//
-////    _titleController = new TextEditingController(text: widget.note.name);
-////    _descriptionController = new TextEditingController(text: widget.note.message);
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,55 +128,19 @@ class _ChatPage extends State<ChatPage> {
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () async {
-                final PermissionStatus permissionStatus =
-                    await _getPermission();
-                if (permissionStatus == PermissionStatus.granted) {
-                  ContactShip selected = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ContactsPage(title: 'Flutter Contacts')));
-                  if (selected != null) {
-                    this.displayName = selected.Phone;
-                    this.phoneNumber = selected.Code.toString();
-//                        .elementAt(0)
-//                        .value
-//                        .replaceAll(RegExp(r"[^\w]"), "");
-                    print("SĐT: $phoneNumber");
-                    setState(() {
-                      isConnected = true;
-                    });
-                  }
+                ContactShip selected = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ContactsShipPage(this.isLogin)));
+                if (selected != null) {
+
+                  this.displayName = selected.name;
+                  this.phoneNumber = selected.code.toString();
+                  print(this.phoneNumber);
+                  setState(() {
+                    isConnected = true;
+                  });
                 }
-
-//                String number = selected.phones
-//                    .elementAt(0)
-//                    .value
-//                    .replaceAll(RegExp(r"[^\w]"), "");
-//                print("Data: $number");
-//                print("Data: {$selected.displayName}");
-
-//                final PermissionStatus permissionStatus =
-//                    await _getPermission();
-//                if (permissionStatus == PermissionStatus.granted) {
-//                  Navigator.push(context,
-//                      MaterialPageRoute(builder: (context) => ContactsPage()));
-//                } else {
-//                  //If permissions have been denied show standard cupertino alert dialog
-//                  showDialog(
-//                      context: context,
-//                      builder: (BuildContext context) => CupertinoAlertDialog(
-//                            title: Text('Permissions error'),
-//                            content: Text('Please enable contacts access '
-//                                'permission in system settings'),
-//                            actions: <Widget>[
-//                              CupertinoDialogAction(
-//                                child: Text('OK'),
-//                                onPressed: () => Navigator.of(context).pop(),
-//                              )
-//                            ],
-//                          ));
-//                }
               },
             )
           ]),
@@ -398,22 +307,8 @@ class _ChatPage extends State<ChatPage> {
     });
   }
 
-//  _sendDataViaBlue(String text) async {
-//    List<BluetoothService> services = await device.discoverServices();
-//    services.forEach((service) {
-//      List<BluetoothCharacteristic> blueChar = service.characteristics;
-//      blueChar.forEach((f) async {
-//        if (f.uuid.toString().startsWith("0000ffe2", 0) == true) {
-////          await f.write(utf8.encode(text), withoutResponse: true);
-//          await f.write(utf8.encode("\$MES_cong hoa xa hoi chu nghia viet nam"), withoutResponse: true);
-//          print("Characteristice =  ${f.uuid}, data = $text");
-//        }
-//      });
-//    });
-//  }
-
   _sendDataViaBlue(String text) async {
-    if(blueCharacteristic != null) {
+    if (blueCharacteristic != null) {
       await blueCharacteristic.write(utf8.encode(text));
       print(text);
     }
