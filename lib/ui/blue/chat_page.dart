@@ -9,6 +9,7 @@ import 'package:ship/data/models/message.dart';
 import 'package:ship/data/models/message_detail.dart';
 import 'package:ship/ui/contacts/contacts_pages_ship.dart';
 import 'package:ship/utils/database_helper.dart';
+import 'dart:io' show Platform;
 
 class ChatPage extends StatefulWidget {
   final BluetoothDevice device;
@@ -93,6 +94,8 @@ class _ChatPage extends State<ChatPage> {
       isConnected = false;
     }
     print("msgId = $msgId");
+
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
     getBluetoothCharacteristic();
   }
@@ -301,8 +304,7 @@ class _ChatPage extends State<ChatPage> {
 //  }
 
   getBluetoothCharacteristic() async {
-    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
-    if (!isIOS) {
+    if (Platform.isAndroid)  {
       final mtu = await device.mtu.first;
       await device.requestMtu(128);
     }
