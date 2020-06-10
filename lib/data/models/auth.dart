@@ -134,14 +134,14 @@ class AuthModel extends ChangeNotifier {
     int _status = 0;
 
     // TODO: API LOGIN CODE HERE
-    String _url = "http://tau.dvbk.vn/API_Ship/Login?loginname=$_username&pass=$_password$key";
+    String _url =
+        "http://tau.dvbk.vn/API_Ship/Login?loginname=$_username&pass=$_password$key";
     print(_url);
 //    var _data = await http.get(_url);
 //    final String res = _data.body;
 //    _status = res["LoginStatus"];
     NetworkUtil _netUtil = new NetworkUtil();
     var _data = await _netUtil.get(_url); //.then((dynamic res) {
-
 
 ////      _status = res["LoginStatus"];
 //      // Login
@@ -159,11 +159,10 @@ class AuthModel extends ChangeNotifier {
 
     _status = _data["LoginStatus"];
 
-
     User _newUser = new User();
-    _newUser.id =  _data["UserID"];
-    _newUser.firstname =  _data["Fullname"];
-    _newUser.lastname =  _data["Msg"];
+    _newUser.id = _data["UserID"];
+    _newUser.firstname = _data["Fullname"];
+    _newUser.lastname = _data["Msg"];
 
     print(_status);
     if (_rememberMe && _status > 0) {
@@ -173,7 +172,9 @@ class AuthModel extends ChangeNotifier {
         prefs.setString("saved_user_id", _newUser.id.toString());
       });
     }
-
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString("saved_user_id", _newUser.id.toString());
+    });
     // Get Info For User
     if (_status > 0) {
       _user = _newUser;

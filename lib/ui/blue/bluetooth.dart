@@ -109,7 +109,7 @@ class FindDevicesScreen extends StatelessWidget {
 //                                          ListViewNote(device: d)));
 
                                   return RaisedButton(
-                                      child: Text('OPEN'),
+                                      child: Text('Mở'),
                                       onPressed: () {
 //                                      Navigator
 ////                                          .of(context)
@@ -120,7 +120,10 @@ class FindDevicesScreen extends StatelessWidget {
                                                 builder: (context) =>
                                                     ListViewMessage(
                                                         isLogin, d)));
+
+                                        FlutterBlue.instance.stopScan();
                                       }
+
 //                                    => Navigator.of(context).push(
 //                                        MaterialPageRoute(
 //                                            builder: (context) =>
@@ -142,18 +145,24 @@ class FindDevicesScreen extends StatelessWidget {
                   children: snapshot.data
                       .map(
                         (r) => ScanResultTile(
-                          result: r,
-                          onTap: () => Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            r.device.connect();
-                            return ListViewMessage(isLogin, r.device);
-                          })),
+                            result: r,
+                            onTap: () async {
+                              await r.device.connect();
+
+//                              Navigator.of(context)
+//                                  .push(MaterialPageRoute(builder: (context) {
+//                                r.device.connect();
+//                                return ListViewMessage(isLogin, r.device);
+//                              }));
+//
+//                              FlutterBlue.instance.stopScan();
+                            }
 //                          => Navigator.of(context)
 //                              .push(MaterialPageRoute(builder: (context) {
 //                            r.device.connect();
 //                            return DeviceScreen(device: r.device);
 //                          })),
-                        ),
+                            ),
                       )
                       .toList(),
                 ),

@@ -74,6 +74,13 @@ class _ChatPage extends State<ChatPage> {
     this.device = widget.device;
     this.msgId = widget.msgId;
     this.displayName = widget.displayName;
+    
+    if(this.displayName != null && this.displayName.length > 0) {
+      db.getContactShipDetailWithName(this.displayName).then((notes) {
+        this.phoneNumber = notes.code.toString();
+        print("phoneNumber = $phoneNumber");
+      });
+    }
 
     // Get all message
     db.getMessageDetailWithMsgId(this.msgId).then((notes) {
@@ -136,7 +143,8 @@ class _ChatPage extends State<ChatPage> {
 
                   this.displayName = selected.name;
                   this.phoneNumber = selected.code.toString();
-                  print(this.phoneNumber);
+
+                  print("PhoneNumber = " + this.phoneNumber);
                   setState(() {
                     isConnected = true;
                   });
@@ -241,11 +249,13 @@ class _ChatPage extends State<ChatPage> {
 
   void _sendMessage(String text) async {
     text = text.trim();
+
     textEditingController.clear();
 
     if (text.length > 0) {
       try {
         String send = "\$MES_$phoneNumber" + "_" + text + "\r\n";
+        
         _sendDataViaBlue(send);
 
         if (this.msgId < 0) {
@@ -300,8 +310,10 @@ class _ChatPage extends State<ChatPage> {
     services.forEach((service) {
       List<BluetoothCharacteristic> blueChar = service.characteristics;
       blueChar.forEach((f) async {
-        if (f.uuid.toString().startsWith("0000ffe2", 0) == true) {
+        if (f.uuid.toString().startsWith("0000ffe2", 0) == true || f.uuid.toString().startsWith("0000ffe1", 0) == true) {
           this.blueCharacteristic = f;
+          print("FOUND =>" + f.uuid.toString());
+          return;
         }
       });
     });
@@ -311,6 +323,9 @@ class _ChatPage extends State<ChatPage> {
     if (blueCharacteristic != null) {
       await blueCharacteristic.write(utf8.encode(text));
       print(text);
+    }
+    else {
+      print("NULL");
     }
   }
 }

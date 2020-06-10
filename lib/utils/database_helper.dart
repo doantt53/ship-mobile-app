@@ -214,11 +214,11 @@ class DatabaseHelper {
     return Sqflite.firstIntValue(await dbClient.rawQuery('SELECT COUNT(*) FROM $tableContactShip'));
   }
 
-//  Future<List> getDetailContact(int _msgId) async {
+//  Future<List> getDetailContact(String _name) async {
 //    var dbClient = await db;
 //    var result = await dbClient.query(tableMessageDetail,
-//        columns: [columnId, columnMsgId, columnName, columnMessage, columnMsgIn],
-//        where: '$columnMsgId = ?',
+//        columns: [columnId, columnContactID, columnDeviceID, columnCode, columnPhone, columnDateCreate, columnName],
+//        where: '$columnName = ?',
 //        whereArgs: [_msgId]);
 //    return result.toList();
 //  }
@@ -227,18 +227,18 @@ class DatabaseHelper {
 //    var dbClient = await db;
 //    return Sqflite.firstIntValue(await dbClient.rawQuery('SELECT COUNT(*) FROM $tableMessageDetail'));
 //  }
-//
-//  Future<Message> getMessageDetailWithId(int id) async {
-//    var dbClient = await db;
-//    List<Map> result = await dbClient.query(tableMessage,
-//        columns: [columnId, columnMsgId, columnName, columnMessage, columnMsgIn],
-//        where: '$columnId = ?',
-//        whereArgs: [id]);
-//
-//    if (result.length > 0) {
-//      return new Message.fromMap(result.first);
-//    }
-//
-//    return null;
-//  }
+
+  Future<ContactShip> getContactShipDetailWithName(String name) async {
+    var dbClient = await db;
+    List<Map> result = await dbClient.query(tableContactShip,
+        columns: [columnId, columnContactID, columnDeviceID, columnCode, columnPhone, columnDateCreate, columnName],
+        where: '$columnName = ?',
+        whereArgs: [name]);
+
+    if (result.length > 0) {
+      return new ContactShip.fromMap(result.first);
+    }
+
+    return null;
+  }
 }

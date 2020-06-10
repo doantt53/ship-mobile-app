@@ -358,6 +358,14 @@ class MapSampleState extends State<monitorPage> {
       // })
   }
 
+//  void SetMaptype(){
+//    setState(() {
+//    if(_currentMaptype ==  MapType.hybrid){
+//
+//    }
+//      );
+//
+//  }
 
   bool Check = false;
   @override
@@ -406,6 +414,11 @@ class MapSampleState extends State<monitorPage> {
               markers: _markers,
               onCameraMove: _onCameraMove,
             ),
+//            FloatingActionButton.extended(
+//             // onPressed: SetMaptype,
+//              label: Text('To the lake!'),
+//              icon: Icon(Icons.directions_boat),
+//            ),
           ],
         ),
       ),
