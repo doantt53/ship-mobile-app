@@ -14,13 +14,15 @@ import 'package:flutter/foundation.dart' show TargetPlatform;
 class ChatPage extends StatefulWidget {
   final BluetoothDevice device;
 
+  bool ios;
+
   bool isLogin;
 
   int msgId;
 
   String displayName;
 
-  ChatPage(this.isLogin, this.device, this.msgId, this.displayName);
+  ChatPage(this.isLogin, this.device, this.msgId, this.displayName, this.ios);
 
   @override
   _ChatPage createState() => new _ChatPage();
@@ -95,17 +97,12 @@ class _ChatPage extends State<ChatPage> {
     }
     print("msgId = $msgId");
 
+    getBluetoothCharacteristic(widget.ios);
   }
 
   @override
   Widget build(BuildContext context) {
     var platform = Theme.of(context).platform;
-    if(platform == TargetPlatform.iOS) {
-      getBluetoothCharacteristic(true);
-    } else {
-      getBluetoothCharacteristic(false);
-    }
-
     final List<Row> list = messages.map((_message) {
       return Row(
         children: <Widget>[
@@ -331,7 +328,7 @@ class _ChatPage extends State<ChatPage> {
       await blueCharacteristic.write(utf8.encode(text));
       print(text);
     } else {
-      print("NULL");
+      print("Blue Characteristic IS NULL");
     }
   }
 }

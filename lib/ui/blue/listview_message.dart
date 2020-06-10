@@ -34,6 +34,7 @@ class _ListViewMessageState extends State<ListViewMessage> {
 
   @override
   Widget build(BuildContext context) {
+    var platform = Theme.of(context).platform;
         return Scaffold(
         appBar: AppBar(
           title: Text('Danh sách tin nhắn'),
@@ -65,7 +66,7 @@ class _ListViewMessageState extends State<ListViewMessage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ChatPage(widget.isLogin, widget.device,
-                                    items[position].id, items[position].name)),
+                                    items[position].id, items[position].name, platform == TargetPlatform.iOS ? true : false)),
                           );
 //                        _navigateToNote(context, items[position]);
                         }),
@@ -79,7 +80,7 @@ class _ListViewMessageState extends State<ListViewMessage> {
           onPressed: () async {
             await Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ChatPage(widget.isLogin, widget.device, -1, "")),
+              MaterialPageRoute(builder: (context) => ChatPage(widget.isLogin, widget.device, -1, "", platform == TargetPlatform.iOS ? true : false)),
             );
 
 //            Navigator.of(context).pushReplacement(new MaterialPageRoute(
