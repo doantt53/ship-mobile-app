@@ -302,8 +302,8 @@ class _ChatPage extends State<ChatPage> {
 //  }
 
   getBluetoothCharacteristic() async {
-    final mtu = await device.mtu.first;
-    await device.requestMtu(128);
+//    final mtu = await device.mtu.first;
+//    await device.requestMtu(128);
     List<BluetoothService> services = await device.discoverServices();
     services.forEach((service) {
       List<BluetoothCharacteristic> blueChar = service.characteristics;
