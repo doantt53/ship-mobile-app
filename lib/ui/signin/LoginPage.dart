@@ -11,7 +11,6 @@ import '../../constants.dart';
 import '../../data/models/auth.dart';
 import '../../utils/popUp.dart';
 
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/cupertino.dart';
 
 class LoginPage extends StatefulWidget {
@@ -266,17 +265,17 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<PermissionStatus> _getPermission() async {
-    final PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.contacts);
-    if (permission != PermissionStatus.granted) {
-      final Map<PermissionGroup, PermissionStatus> permissionStatus =
-          await PermissionHandler()
-              .requestPermissions([PermissionGroup.contacts]);
-      return permissionStatus[PermissionGroup.contacts] ??
-          PermissionStatus.unknown;
-    } else {
-      return permission;
-    }
-  }
+//  Future<PermissionStatus> _getPermission() async {
+//    final PermissionStatus permission = await PermissionHandler()
+//        .checkPermissionStatus(PermissionGroup.contacts);
+//    if (permission != PermissionStatus.granted) {
+//      final Map<PermissionGroup, PermissionStatus> permissionStatus =
+//          await PermissionHandler()
+//              .requestPermissions([PermissionGroup.contacts]);
+//      return permissionStatus[PermissionGroup.contacts] ??
+//          PermissionStatus.unknown;
+//    } else {
+//      return permission;
+//    }
+//  }
 }

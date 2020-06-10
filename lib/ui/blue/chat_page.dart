@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:ship/data/models/ContactShip.dart';
 import 'package:ship/data/models/message.dart';
 import 'package:ship/data/models/message_detail.dart';
@@ -289,19 +288,19 @@ class _ChatPage extends State<ChatPage> {
     }
   }
 
-  Future<PermissionStatus> _getPermission() async {
-    final PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.contacts);
-    if (permission != PermissionStatus.granted) {
-      final Map<PermissionGroup, PermissionStatus> permissionStatus =
-          await PermissionHandler()
-              .requestPermissions([PermissionGroup.contacts]);
-      return permissionStatus[PermissionGroup.contacts] ??
-          PermissionStatus.unknown;
-    } else {
-      return permission;
-    }
-  }
+//  Future<PermissionStatus> _getPermission() async {
+//    final PermissionStatus permission = await PermissionHandler()
+//        .checkPermissionStatus(PermissionGroup.contacts);
+//    if (permission != PermissionStatus.granted) {
+//      final Map<PermissionGroup, PermissionStatus> permissionStatus =
+//          await PermissionHandler()
+//              .requestPermissions([PermissionGroup.contacts]);
+//      return permissionStatus[PermissionGroup.contacts] ??
+//          PermissionStatus.unknown;
+//    } else {
+//      return permission;
+//    }
+//  }
 
   getBluetoothCharacteristic() async {
     final mtu = await device.mtu.first;
