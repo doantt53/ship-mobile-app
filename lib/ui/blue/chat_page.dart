@@ -310,7 +310,6 @@ class _ChatPage extends State<ChatPage> {
     services.forEach((service) {
       List<BluetoothCharacteristic> blueChar = service.characteristics;
       blueChar.forEach((f) async {
-        print("UUID SERVICE =>" + f.uuid.toString());
         if (f.uuid.toString().startsWith("0000ffe2", 0) == true ||
             f.uuid.toString().startsWith("0000ffe1", 0) == true ) {
           this.blueCharacteristic = f;
