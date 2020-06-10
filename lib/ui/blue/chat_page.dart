@@ -9,6 +9,7 @@ import 'package:ship/data/models/message.dart';
 import 'package:ship/data/models/message_detail.dart';
 import 'package:ship/ui/contacts/contacts_pages_ship.dart';
 import 'package:ship/utils/database_helper.dart';
+import 'package:flutter/foundation.dart' show TargetPlatform;
 
 class ChatPage extends StatefulWidget {
   final BluetoothDevice device;
@@ -94,13 +95,17 @@ class _ChatPage extends State<ChatPage> {
     }
     print("msgId = $msgId");
 
-    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
-
-    getBluetoothCharacteristic();
   }
 
   @override
   Widget build(BuildContext context) {
+    var platform = Theme.of(context).platform;
+    if(platform == TargetPlatform.iOS) {
+      getBluetoothCharacteristic(true);
+    } else {
+      getBluetoothCharacteristic(false);
+    }
+
     final List<Row> list = messages.map((_message) {
       return Row(
         children: <Widget>[
@@ -302,11 +307,11 @@ class _ChatPage extends State<ChatPage> {
 //    }
 //  }
 
-  getBluetoothCharacteristic() async {
-//    if (Platform.isAndroid)  {
-//      final mtu = await device.mtu.first;
-//      await device.requestMtu(128);
-//    }
+  getBluetoothCharacteristic(bool ios) async {
+    if (!ios)  {
+      final mtu = await device.mtu.first;
+      await device.requestMtu(128);
+    }
     List<BluetoothService> services = await device.discoverServices();
     services.forEach((service) {
       List<BluetoothCharacteristic> blueChar = service.characteristics;
