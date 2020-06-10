@@ -4,6 +4,7 @@ import 'package:ship/data/models/message.dart';
 import 'package:ship/utils/database_helper.dart';
 import 'chat_page.dart';
 import 'note_screen.dart';
+import 'package:flutter/foundation.dart' show TargetPlatform;
 
 class ListViewMessage extends StatefulWidget {
   final BluetoothDevice device;

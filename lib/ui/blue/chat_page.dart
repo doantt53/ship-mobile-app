@@ -9,7 +9,6 @@ import 'package:ship/data/models/message.dart';
 import 'package:ship/data/models/message_detail.dart';
 import 'package:ship/ui/contacts/contacts_pages_ship.dart';
 import 'package:ship/utils/database_helper.dart';
-import 'package:flutter/foundation.dart' show TargetPlatform;
 
 class ChatPage extends StatefulWidget {
   final BluetoothDevice device;
