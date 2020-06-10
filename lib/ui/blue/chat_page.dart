@@ -4,11 +4,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:ship/data/models/ContactShip.dart';
 import 'package:ship/data/models/message.dart';
 import 'package:ship/data/models/message_detail.dart';
-import 'package:ship/ui/contacts/contacts_page.dart';
 import 'package:ship/ui/contacts/contacts_pages_ship.dart';
 import 'package:ship/utils/database_helper.dart';
 
@@ -289,28 +287,28 @@ class _ChatPage extends State<ChatPage> {
     }
   }
 
-  Future<PermissionStatus> _getPermission() async {
-    final PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.contacts);
-    if (permission != PermissionStatus.granted) {
-      final Map<PermissionGroup, PermissionStatus> permissionStatus =
-          await PermissionHandler()
-              .requestPermissions([PermissionGroup.contacts]);
-      return permissionStatus[PermissionGroup.contacts] ??
-          PermissionStatus.unknown;
-    } else {
-      return permission;
-    }
-  }
+//  Future<PermissionStatus> _getPermission() async {
+//    final PermissionStatus permission = await PermissionHandler()
+//        .checkPermissionStatus(PermissionGroup.contacts);
+//    if (permission != PermissionStatus.granted) {
+//      final Map<PermissionGroup, PermissionStatus> permissionStatus =
+//          await PermissionHandler()
+//              .requestPermissions([PermissionGroup.contacts]);
+//      return permissionStatus[PermissionGroup.contacts] ??
+//          PermissionStatus.unknown;
+//    } else {
+//      return permission;
+//    }
+//  }
 
   getBluetoothCharacteristic() async {
     final mtu = await device.mtu.first;
-    await device.requestMtu(180);
+    await device.requestMtu(128);
     List<BluetoothService> services = await device.discoverServices();
     services.forEach((service) {
       List<BluetoothCharacteristic> blueChar = service.characteristics;
       blueChar.forEach((f) async {
-        if (f.uuid.toString().startsWith("0000ffe2", 0) == true || f.uuid.toString().startsWith("0000ffe1", 0) == true) {
+        if (f.uuid.toString().startsWith("0000ffe2", 0) == true || f.uuid.toString().startsWith("0000ffe1", 0) == true || f.uuid.toString().startsWith("0000ffe0", 0) == true) {
           this.blueCharacteristic = f;
           print("FOUND =>" + f.uuid.toString());
           return;

@@ -3,15 +3,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ship/data/models/ContactShip.dart';
 import 'package:ship/ui/blue/bluetooth.dart';
-import 'package:ship/ui/blue/chat_page.dart';
-import 'package:ship/ui/contacts/contacts_pages_ship.dart';
 import '../../constants.dart';
 import '../../data/models/auth.dart';
 import '../../utils/popUp.dart';
-
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/cupertino.dart';
 
 class LoginPage extends StatefulWidget {
@@ -266,17 +261,17 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<PermissionStatus> _getPermission() async {
-    final PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.contacts);
-    if (permission != PermissionStatus.granted) {
-      final Map<PermissionGroup, PermissionStatus> permissionStatus =
-          await PermissionHandler()
-              .requestPermissions([PermissionGroup.contacts]);
-      return permissionStatus[PermissionGroup.contacts] ??
-          PermissionStatus.unknown;
-    } else {
-      return permission;
-    }
-  }
+//  Future<PermissionStatus> _getPermission() async {
+//    final PermissionStatus permission = await PermissionHandler()
+//        .checkPermissionStatus(PermissionGroup.contacts);
+//    if (permission != PermissionStatus.granted) {
+//      final Map<PermissionGroup, PermissionStatus> permissionStatus =
+//          await PermissionHandler()
+//              .requestPermissions([PermissionGroup.contacts]);
+//      return permissionStatus[PermissionGroup.contacts] ??
+//          PermissionStatus.unknown;
+//    } else {
+//      return permission;
+//    }
+//  }
 }

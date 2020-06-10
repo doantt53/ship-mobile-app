@@ -3,14 +3,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
-import '../classes/res_login.dart';
 import '../../utils/network_util.dart';
-
-import 'package:native_widgets/native_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-//import 'package:uuid/uuid.dart';
-
 import '../../constants.dart';
 import '../classes/user.dart';
 import '../global.dart';
