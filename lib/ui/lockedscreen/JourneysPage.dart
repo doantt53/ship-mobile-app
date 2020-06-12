@@ -9,7 +9,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../constants.dart';
 import '../../data/models/auth.dart';
@@ -21,9 +20,8 @@ import '../../data/models/ListShip.dart';
 import '../../data/models/TripInfo.dart';
 
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:overlay_support/overlay_support.dart';
 
-import 'package:toast/toast.dart';
+//import 'package:toast/toast.dart';
 
 //Define "root widget"
 //StatefulWidget
@@ -555,10 +553,9 @@ class _MyDialogState extends State<_MyDialog> {
     });
   }
 
-  void showToast(String msg, {int duration, int gravity}) {
-    Toast.show(msg, context, duration: duration, gravity: gravity);
-  }
-
+//  void showToast(String msg, {int duration, int gravity}) {
+//    Toast.show(msg, context, duration: duration, gravity: gravity);
+//  }
 
   @override
   Widget build(BuildContext context) {

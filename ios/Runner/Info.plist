@@ -2,32 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSAppleMusicUsageDescription</key>
-    <string>Music!</string>
-    <key>kTCCServiceMediaLibrary</key>
-    <string>media</string>
-    <key>NSCalendarsUsageDescription</key>
-    <string>Calendars</string>
-    <key>NSCameraUsageDescription</key>
-    <string>camera</string>
-    <key>NSContactsUsageDescription</key>
-    <string>contacts</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>microphone</string>
-    <key>NSSpeechRecognitionUsageDescription</key>
-    <string>speech</string>
-    <key>NSMotionUsageDescription</key>
-    <string>motion</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>photos</string>
-    <key>NSRemindersUsageDescription</key>
-    <string>reminders</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-    <string>Our app uses bluetooth to find, connect and transfer data between different devices</string>
-
+    <string>Connect Bluetooth to the BK88VN cruise monitoring device to transfer chain data then the device sent to the server</string>
     <key>io.flutter.embedded_views_preview</key>
     <true/>
-
 
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
