@@ -81,7 +81,7 @@ class _ListViewContactState extends State<ContactsShipPage> {
 
   Future<List<ContactShip>> fetchContactShipModels() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    String sUserId = "43"; //= _prefs.getString("saved_user_id") ?? "";
+    String sUserId = _prefs.getString("saved_user_id") ?? "";
     print("sUserId => $sUserId");
 
     String _url = URL_CONTACT + sUserId + key;

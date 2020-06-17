@@ -160,16 +160,17 @@ class AuthModel extends ChangeNotifier {
     _newUser.lastname = _data["Msg"];
 
     print(_status);
+
     if (_rememberMe && _status > 0) {
       SharedPreferences.getInstance().then((prefs) {
         prefs.setString("saved_username", _username);
         prefs.setString("saved_password", _password);
-        prefs.setString("saved_user_id", _newUser.id.toString());
       });
     }
     SharedPreferences.getInstance().then((prefs) {
       prefs.setString("saved_user_id", _newUser.id.toString());
     });
+
     // Get Info For User
     if (_status > 0) {
       _user = _newUser;
