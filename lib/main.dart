@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ship/ui/blue/bluetooth.dart';
+import 'package:ship/ui/lockedscreen/MonutorPage.dart';
 import 'data/models/auth.dart';
 import 'package:persist_theme/persist_theme.dart';
 import 'package:provider/provider.dart';
-import 'ui/lockedscreen/HomePage.dart';
 import 'ui/lockedscreen/SettingsPage.dart';
 import 'ui/signin/LoginPage.dart';
 
@@ -45,13 +45,13 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             theme: model.theme,
             home: Consumer<AuthModel>(builder: (context, model, child) {
-              if (model?.user != null) return HomePage();
+              if (model?.user != null) return monitorPage();
               return LoginPage();
             }),
             routes: <String, WidgetBuilder>{
               "/login": (BuildContext context) => LoginPage(),
-              "/menu": (BuildContext context) => HomePage(),
-              "/home": (BuildContext context) => HomePage(),
+              "/menu": (BuildContext context) => monitorPage(),
+              "/home": (BuildContext context) => monitorPage(),
               "/settings": (BuildContext context) => SettingsPage(),
 //              "/create": (BuildContext context) => CreateAccount(),
 //              "/bluetooth": (BuildContext context) => FlutterBlueApp(),

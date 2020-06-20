@@ -26,6 +26,7 @@ class ContactShip {
 //    this.dateCreate = obj['DateCreate'];
 //    this.name = obj['Name'];
 //  }
+
   int get id => _id;
   int get contactID => _contactID;
   int get deviceID => _deviceID;
@@ -66,4 +67,6 @@ class ContactShip {
         json["DateCreate"],
         json["Name"]);
   }
+
+
 }

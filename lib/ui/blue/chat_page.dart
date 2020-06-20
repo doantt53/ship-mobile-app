@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ship/data/models/ContactShip.dart';
 import 'package:ship/data/models/message.dart';
 import 'package:ship/data/models/message_detail.dart';
@@ -60,6 +61,8 @@ class _ChatPage extends State<ChatPage> {
 
   final ScrollController listScrollController = new ScrollController();
 
+  bool bluetoothConnected = false;
+
   bool isConnecting = false;
 
   bool isConnected = true;
@@ -97,6 +100,50 @@ class _ChatPage extends State<ChatPage> {
     print("msgId = $msgId");
 
     getBluetoothCharacteristic(widget.ios);
+  }
+
+  startScan(bool isLogin) async {
+    FlutterBlue flutterBlue = FlutterBlue.instance;
+
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String bluetTarget = _prefs.getString("BLUE_TARGET_DEVICE_NAME") ?? "";
+    if (isLogin && bluetTarget.length > 0) {
+      device = null;
+      // Start scanning
+      flutterBlue.startScan(timeout: Duration(seconds: 10));
+      // Check connected devices
+      flutterBlue.connectedDevices.then((values) {
+        values.forEach((note) {
+          if (note.name == bluetTarget) {
+            device = note; // Set device bluetooth
+            print("BLUE FOUND ...");
+          }
+        });
+      });
+
+      // Scan
+      if (device == null) {
+        // Listen to scan results
+        flutterBlue.scanResults.listen((results) async {
+          for (ScanResult r in results) {
+            if (r.device.name == bluetTarget) {
+              print("BLUE FOUND ...");
+              try {
+                await r.device.connect();
+              } on Exception catch (_) {
+                print("Blue connect error");
+              }
+              // Check status
+              final state = (r.device.state)
+                  .firstWhere((s) => s == BluetoothDeviceState.connected);
+              if (state != null) device = r.device;
+            }
+          }
+        });
+      }
+      flutterBlue.stopScan();
+    }
+    print("BLUE_TARGET_DEVICE_NAME = $bluetTarget");
   }
 
   @override
@@ -152,7 +199,7 @@ class _ChatPage extends State<ChatPage> {
               },
             )
           ]),
-      body: SafeArea(
+      body:  SafeArea(
         child: Column(
           children: <Widget>[
             Flexible(
@@ -304,7 +351,7 @@ class _ChatPage extends State<ChatPage> {
 //  }
 
   getBluetoothCharacteristic(bool ios) async {
-    if (!ios)  {
+    if (!ios) {
       final mtu = await device.mtu.first;
       await device.requestMtu(128);
     }
@@ -313,7 +360,7 @@ class _ChatPage extends State<ChatPage> {
       List<BluetoothCharacteristic> blueChar = service.characteristics;
       blueChar.forEach((f) async {
         if (f.uuid.toString().startsWith("0000ffe2", 0) == true ||
-            f.uuid.toString().startsWith("0000ffe1", 0) == true ) {
+            f.uuid.toString().startsWith("0000ffe1", 0) == true) {
           this.blueCharacteristic = f;
           print("FOUND =>" + f.uuid.toString());
           return;

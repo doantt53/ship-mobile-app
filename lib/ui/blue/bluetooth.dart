@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:math';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'listview_message.dart';
 import 'widgets.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +100,20 @@ class FindDevicesScreen extends StatelessWidget {
                               builder: (c, snapshot) {
                                 if (snapshot.data ==
                                     BluetoothDeviceState.connected) {
+                                  if (!isLogin) {
+//                                    SharedPreferences _prefs = await SharedPreferences.getInstance();
+//                                    String sUserId = _prefs.getString("saved_user_id") ?? "";
+                                    // Check open message
+                                    if(d.name != null && d.name.length > 0 && d.name.startsWith("BK")) {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ListViewMessage(
+                                                      isLogin, d)));
+
+                                      FlutterBlue.instance.stopScan();
+                                    }
+                                  }
                                   // Next screen chat
 //                                  Navigator.of(context).pushReplacement(
 //                                      new MaterialPageRoute(
@@ -111,10 +127,6 @@ class FindDevicesScreen extends StatelessWidget {
                                   return RaisedButton(
                                       child: Text('Mở'),
                                       onPressed: () {
-//                                      Navigator
-////                                          .of(context)
-////                                          .pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => ListViewNote(device: d)));
-
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =>
@@ -122,15 +134,15 @@ class FindDevicesScreen extends StatelessWidget {
                                                         isLogin, d)));
 
                                         FlutterBlue.instance.stopScan();
-                                      }
-
-//                                    => Navigator.of(context).push(
-//                                        MaterialPageRoute(
-//                                            builder: (context) =>
-//                                                DeviceScreen(device: d))),
-
-                                      );
+                                      });
                                 }
+
+                                // Auto connection
+                                print(d.name);
+                                if(d.name != null && d.name.startsWith("BK1")) {
+                                  print("Need connection ${d.name}");
+                                }
+
                                 return Text(snapshot.data.toString());
                               },
                             ),
@@ -148,6 +160,8 @@ class FindDevicesScreen extends StatelessWidget {
                             result: r,
                             onTap: () async {
                               await r.device.connect();
+
+
 
 //                              Navigator.of(context)
 //                                  .push(MaterialPageRoute(builder: (context) {

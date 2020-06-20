@@ -56,7 +56,7 @@ class DatabaseHelper {
     await db.execute(
         'CREATE TABLE $tableMessage($columnId INTEGER PRIMARY KEY, $columnName TEXT, $columnMessage TEXT)');
 
-    // Create table messageTable
+    // Create table message detail table
     await db.execute(
         'CREATE TABLE $tableMessageDetail($columnId INTEGER PRIMARY KEY, $columnMsgId INTEGER, $columnName TEXT, $columnMessage TEXT, $columnMsgIn INTEGER)');
 

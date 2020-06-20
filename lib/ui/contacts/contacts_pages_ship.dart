@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ship/data/models/message.dart';
 import 'package:ship/utils/database_helper.dart';
 
 import '../../data/models/ContactShip.dart';
@@ -11,12 +9,10 @@ import '../../data/models/ContactShip.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../data/global.dart';
-import '../../data/models/auth.dart';
-
 import 'dart:async';
 import 'package:flutter/rendering.dart';
 
-import 'package:provider/provider.dart';
+import 'address_page.dart';
 
 class ContactsShipPage extends StatefulWidget {
   final bool isLogin;
@@ -44,6 +40,7 @@ class _ListViewContactState extends State<ContactsShipPage> {
       if (network) {
         await fetchContactShipModels();
         await db.deleteAllContacts(); // Delete database
+        items.clear();
         setState(() {
           for (var i = 0; i < _lstContacts.length; i++) {
             items.add(_lstContacts[i]);
@@ -116,13 +113,28 @@ class _ListViewContactState extends State<ContactsShipPage> {
 
   @override
   Widget build(BuildContext context) {
-//    return MaterialApp(
-//      title: 'JSA ListView Demo',
     return Scaffold(
       appBar: AppBar(
         title: Text('Danh sách số điện thoại'),
         centerTitle: true,
         backgroundColor: Colors.blue,
+        actions: (_isLogin == true)
+            ? <Widget>[
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    final selected = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                FormAddScreen(contactShip: null)));
+//              setState(() {
+//              });
+                    getContacts();
+                  },
+                )
+              ]
+            : <Widget>[],
       ),
       body: Center(
         child: ListView.builder(
@@ -155,15 +167,15 @@ class _ListViewContactState extends State<ContactsShipPage> {
               );
             }),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.search),
-        onPressed: () async {
-          //final _auth = Provider.of<AuthModel>(context, listen: true);
-          setState(() {
-            getContacts();
-          });
-        },
-      ),
+//      floatingActionButton: FloatingActionButton(
+//        child: Icon(Icons.search),
+//        onPressed: () async {
+//          //final _auth = Provider.of<AuthModel>(context, listen: true);
+//          setState(() {
+//            getContacts();
+//          });
+//        },
+//      ),
     );
 //    );
   }

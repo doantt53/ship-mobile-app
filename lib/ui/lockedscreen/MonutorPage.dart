@@ -75,6 +75,8 @@ class Debouncer {
   }
 }
 
+MapType currentMaptype = MapType.hybrid;
+
 //State
 class MapSampleState extends State<monitorPage> {
   Completer<GoogleMapController> _Controller = Completer();
@@ -83,8 +85,6 @@ class MapSampleState extends State<monitorPage> {
       const LatLng(20.845724105834961, 106.71234893798828);
   final Set<Marker> _markers = {};
   LatLng _lastMapPosition0 = _center;
-  MapType _currentMaptype = MapType.hybrid;
-
 
   _onMapCreated(GoogleMapController controller) {
     _Controller.complete(controller);
@@ -328,49 +328,50 @@ class MapSampleState extends State<monitorPage> {
     print(
         "================================================================================");
     print(_postList.length);
-      setState(() {
-        for (var i = 0; i < _postList.length; i++) {
-          TiBaseModel Post = new TiBaseModel();
-          Post = _postList[i];
+    setState(() {
+      for (var i = 0; i < _postList.length; i++) {
+        TiBaseModel Post = new TiBaseModel();
+        Post = _postList[i];
 
-          double Lat = _postList[i].Lt;
-          double Lon = _postList[i].Ln;
-          LatLng _center2 = LatLng(Lat, Lon);
-          LatLng _lastMapPosition = _center2;
+        double Lat = _postList[i].Lt;
+        double Lon = _postList[i].Ln;
+        LatLng _center2 = LatLng(Lat, Lon);
+        LatLng _lastMapPosition = _center2;
 
-          _markers.add(Marker(
-              markerId: MarkerId(_postList[i].ShipID.toString()),
-              position: _lastMapPosition,
-              //infoWindow: InfoWindow(title: _postList[i].ShipName, snippet: ""),
-              infoWindow: InfoWindow(title: _postList[i].ShipName),
-              //icon: BitmapDescriptor.defaultMarker,
-              rotation:  _postList[i].Angle.toDouble(),
-              icon: deliveryIcon,
-              //icon:myIcon,
-              onTap: () {
-                //_showDialog(Post);
-                showCustomDialogWithImage(Post);
-              }
-              //icon:_setSourceIcon,
-              ));
-        }
-      });
-      // })
+        _markers.add(Marker(
+            markerId: MarkerId(_postList[i].ShipID.toString()),
+            position: _lastMapPosition,
+            //infoWindow: InfoWindow(title: _postList[i].ShipName, snippet: ""),
+            infoWindow: InfoWindow(title: _postList[i].ShipName),
+            //icon: BitmapDescriptor.defaultMarker,
+            rotation: _postList[i].Angle.toDouble(),
+            icon: deliveryIcon,
+            //icon:myIcon,
+            onTap: () {
+              //_showDialog(Post);
+              showCustomDialogWithImage(Post);
+            }
+            //icon:_setSourceIcon,
+            ));
+      }
+    });
+    // })
   }
 
-//  void SetMaptype(){
-//    setState(() {
-//    if(_currentMaptype ==  MapType.hybrid){
-//
-//    }
-//      );
-//
-//  }
+  void SetMaptype() {
+    setState(() {
+      if (currentMaptype == MapType.hybrid) {
+        print("_currentMaptype => =============");
+        currentMaptype = MapType.normal;
+      } else {
+        currentMaptype = MapType.hybrid;
+      }
+    });
+  }
 
   bool Check = false;
   @override
   Widget build(BuildContext context) {
-
     final _auth = Provider.of<AuthModel>(context, listen: true);
     if (Check == false) {
       Check = true;
@@ -378,9 +379,7 @@ class MapSampleState extends State<monitorPage> {
       Timer.periodic(new Duration(seconds: 600), (timer) {
         setStateMaker(_auth);
       });
-    }else{
-
-    }
+    } else {}
     //_auth?.user?.firstname.toString() ?? "",
     // TODO: implement build
     return MaterialApp(
@@ -392,13 +391,13 @@ class MapSampleState extends State<monitorPage> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.list),
+              icon: Icon(Icons.view_list),
               onPressed: _showListShip,
             ),
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () => Navigator.pushNamed(context, '/settings'),
-            )
+//            IconButton(
+//              icon: Icon(Icons.settings),
+//              onPressed: () => Navigator.pushNamed(context, '/settings'),
+//            )
           ],
         ),
         drawer: AppDrawer(),
@@ -410,16 +409,19 @@ class MapSampleState extends State<monitorPage> {
                 target: _center,
                 zoom: 7.0,
               ),
-              mapType: _currentMaptype,
+              mapType: currentMaptype,
               markers: _markers,
               onCameraMove: _onCameraMove,
             ),
-//            FloatingActionButton.extended(
-//             // onPressed: SetMaptype,
-//              label: Text('To the lake!'),
-//              icon: Icon(Icons.directions_boat),
-//            ),
           ],
+        ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(right: 300.0),
+          child: FloatingActionButton(
+            child: Icon(Icons.layers),
+            backgroundColor: Colors.lightBlue,
+            onPressed: () => SetMaptype(),
+          ),
         ),
       ),
     );

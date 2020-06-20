@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ship/ui/blue/blue_page.dart';
 import 'package:ship/ui/blue/bluetooth.dart';
 import '../../constants.dart';
 import '../../data/models/auth.dart';
@@ -188,8 +189,9 @@ class LoginPageState extends State<LoginPage> {
           await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return FindDevicesScreen(false);
+//                return FindDevicesScreen(false);
 //                return ContactsShipPage(false);
+                return BlueDevicesScreen(false);
               },
             ),
           );
