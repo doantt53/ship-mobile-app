@@ -36,53 +36,77 @@ class _ListViewMessageState extends State<ListViewMessage> {
   @override
   Widget build(BuildContext context) {
     var platform = Theme.of(context).platform;
-        return Scaffold(
-        appBar: AppBar(
-          title: Text('Danh sách tin nhắn'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Danh sách tin nhắn'),
 //          centerTitle: true,
 //          backgroundColor: Colors.blue,
-        ),
-        body: Center(
-          child: ListView.builder(
-              itemCount: items.length,
-              padding: const EdgeInsets.all(15.0),
-              itemBuilder: (context, position) {
-                String img = items[position].name.substring(0, 1);
-                String des = items[position].message;
-                if (des.length > 70) {
-                  des = items[position].message.substring(0, 70);
-                  print("==> " + des);
-                }
-                return Column(
-                  children: <Widget>[
-                    ListTile(
-                        title: Text('${items[position].name}'),
-                        subtitle: Text(des),
-                        leading: CircleAvatar(
-                          child: Text(img),
-                          backgroundColor: Theme.of(context).accentColor,
-                        ),
-                        onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatPage(widget.isLogin, widget.device,
-                                    items[position].id, items[position].name, platform == TargetPlatform.iOS ? true : false)),
-                          );
+      ),
+      body: Center(
+        child: ListView.builder(
+            itemCount: items.length,
+            padding: const EdgeInsets.all(15.0),
+            itemBuilder: (context, position) {
+              String img = items[position].name.substring(0, 1);
+              String des = items[position].message;
+              if (des.length > 70) {
+                des = items[position].message.substring(0, 70);
+                print("==> " + des);
+              }
+              return Column(
+                children: <Widget>[
+                  ListTile(
+                      title: Text('${items[position].name}'),
+                      subtitle: Text(des),
+                      leading: CircleAvatar(
+                        child: Text(img),
+                        backgroundColor: Theme.of(context).accentColor,
+                      ),
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChatPage(
+                                  widget.isLogin,
+                                  widget.device,
+                                  items[position].id,
+                                  items[position].name,
+                                  platform == TargetPlatform.iOS
+                                      ? true
+                                      : false)),
+                        );
 //                        _navigateToNote(context, items[position]);
-                        }),
-                    Divider(height: 5.0),
-                  ],
-                );
-              }),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.message),
-          onPressed: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ChatPage(widget.isLogin, widget.device, -1, "", platform == TargetPlatform.iOS ? true : false)),
-            );
+                        setState(() {
+                          items = [];
+                          db.getAllMessages().then((notes) {
+                            notes.forEach((note) {
+                              items.add(Message.fromMap(note));
+                            });
+                          });
+                        });
+                      }),
+                  Divider(height: 5.0),
+                ],
+              );
+            }),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.message),
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChatPage(widget.isLogin, widget.device,
+                    -1, "", platform == TargetPlatform.iOS ? true : false)),
+          );
+          setState(() {
+            items = [];
+            db.getAllMessages().then((notes) {
+              notes.forEach((note) {
+                items.add(Message.fromMap(note));
+              });
+            });
+          });
 
 //            Navigator.of(context).pushReplacement(new MaterialPageRoute(
 //                builder: (BuildContext context) => ChatPage(-1, "")));
@@ -92,9 +116,9 @@ class _ListViewMessageState extends State<ListViewMessage> {
 //                .pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => page));
 
 //    => _createNewNote(context)
-          },
-        ),
-      );
+        },
+      ),
+    );
   }
 
   void _deleteNote(BuildContext context, Message note, int position) async {

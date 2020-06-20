@@ -40,8 +40,9 @@ class _ListViewContactState extends State<ContactsShipPage> {
       if (network) {
         await fetchContactShipModels();
         await db.deleteAllContacts(); // Delete database
-        items.clear();
+        items = [];
         setState(() {
+          print("Length = ${_lstContacts.length}");
           for (var i = 0; i < _lstContacts.length; i++) {
             items.add(_lstContacts[i]);
             db.saveContactDetail(_lstContacts[i]); // Save db
