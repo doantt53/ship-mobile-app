@@ -12,6 +12,7 @@ import '../../data/global.dart';
 import 'dart:async';
 import 'package:flutter/rendering.dart';
 
+import 'AddressAndUpdate_page.dart';
 import 'address_page.dart';
 
 class ContactsShipPage extends StatefulWidget {
@@ -25,7 +26,7 @@ class ContactsShipPage extends StatefulWidget {
 
 class _ListViewContactState extends State<ContactsShipPage> {
   bool _isLogin = false;
-
+  BuildContext context; // lam delete
   List<ContactShip> items = new List();
 
   DatabaseHelper db = new DatabaseHelper();
@@ -142,42 +143,75 @@ class _ListViewContactState extends State<ContactsShipPage> {
             itemCount: items.length,
             padding: const EdgeInsets.all(15.0),
             itemBuilder: (context, position) {
+              ContactShip contactShip = items[position];
+              final item = items[position];
               String img = items[position].name.toString().substring(0, 1);
               String des = items[position].phone;
               if (des.length > 70) {
                 des = items[position].phone.substring(0, 70);
                 print("==> " + des);
               }
-              return Column(
-                children: <Widget>[
-                  ListTile(
-                      title: Text('${items[position].name}'),
-                      subtitle: Text(des),
-                      leading: CircleAvatar(
-                        child: Text(img),
-                        backgroundColor: Theme.of(context).accentColor,
-                      ),
-                      onTap: () async {
-                        ContactShip selected = items[position];
 
-                        // Return contact selected
-                        Navigator.of(context).pop(selected);
-                      }),
-                  Divider(height: 5.0),
-                ],
+              return Dismissible(
+                key: Key(item.name),
+                confirmDismiss: (DismissDirection direction) async {
+                  return await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Thông báo"),
+                          content: Text("Xóa tên liên lạc ${contactShip.name}?"),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text("Có"),
+                              onPressed: () async {
+                                bool delete = await DeleteContact(contactShip);
+                                Navigator.pop(context);
+                                getContacts();
+                              },
+                            ),
+                            FlatButton(
+                              child: Text("Không"),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                getContacts();
+                              },
+                            )
+                          ],
+                        );
+                      });
+                },
+                background: Container(color: Colors.blue),
+                child: ListTile(
+                    title: Text('${items[position].name}'),
+                    subtitle: Text(des),
+                    leading: CircleAvatar(
+                      child: Text(img),
+                      backgroundColor: Theme.of(context).accentColor,
+                    ),
+                    onTap: () async {
+                      final updated = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PageFull(contactShip: contactShip)));
+                      getContacts();
+                    }),
               );
             }),
       ),
-//      floatingActionButton: FloatingActionButton(
-//        child: Icon(Icons.search),
-//        onPressed: () async {
-//          //final _auth = Provider.of<AuthModel>(context, listen: true);
-//          setState(() {
-//            getContacts();
-//          });
-//        },
-//      ),
     );
-//    );
+  }
+}
+//goi api delete
+Future<bool> DeleteContact(ContactShip data) async {
+  String _url = URL_DELETE + "deviceID=${data.deviceID}&Code=${data.code}";
+  print(_url);
+
+  final response = await http.get(_url);
+  if (response.statusCode == 201) {
+    return true;
+  } else {
+    return false;
   }
 }
