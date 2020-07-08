@@ -129,7 +129,7 @@ class _ListViewContactState extends State<ContactsShipPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                FormAddScreen(contactShip: null)));
+                                PageFull(contactShip: null)));
 //              setState(() {
 //              });
                     getContacts();

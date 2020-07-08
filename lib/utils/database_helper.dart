@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ship/data/models/ContactShip.dart';
+import 'package:ship/data/models/SMS.dart';
 import 'package:ship/data/models/message.dart';
 import 'package:ship/data/models/message_detail.dart';
 import 'package:sqflite/sqflite.dart';
@@ -193,6 +194,11 @@ class DatabaseHelper {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   Future<int> saveContactDetail(ContactShip _contact) async {
+    var dbClient = await db;
+    var result = await dbClient.insert(tableContactShip, _contact.toMap());
+    return result;
+  }
+  Future<int> saveSMSDetail(DataSMS _contact) async {
     var dbClient = await db;
     var result = await dbClient.insert(tableContactShip, _contact.toMap());
     return result;

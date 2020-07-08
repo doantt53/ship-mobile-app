@@ -10,6 +10,6 @@ const URL_CONTACT = "$SERVER_NAME/API_Ship/GetContactByUserName?userid=";
 
 const URL_ADD_ADDRESS_BOOK = "$SERVER_NAME/API_Ship/UpdateMessageContact?";
 const URL_DELETE ="$SERVER_NAME/API_Ship/DelMessageContact?"; // lam delete
-
+const URL_ADD_SMS ="$SERVER_NAME/API_Ship/GetSMSDetailByUserName?userID=";
 //const URL_TIBASE = "$SERVER_NAME/getTIBase?userid=1&key=$key";
 //const URL_TIBASE = "$SERVER_NAME:getTIBase?userid=/";

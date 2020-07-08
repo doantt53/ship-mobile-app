@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ship/ui/blue/blue_page.dart';
 import 'package:ship/ui/blue/bluetooth.dart';
+import 'package:ship/ui/contacts/add_date.dart';
 import 'package:ship/ui/contacts/contacts_pages_ship.dart';
 import 'package:ship/ui/lockedscreen/JourneysPage.dart';
 import 'package:ship/ui/lockedscreen/MonutorPage.dart';
@@ -97,6 +98,25 @@ class AppDrawer extends StatelessWidget {
                 );
               },
             ),
+            Divider(height: 5.0),
+            ListTile(
+              leading: Icon(Icons.turned_in),
+              title: Text(
+                'Số tin đã nhắn',
+                textScaleFactor: textScaleFactor,
+              ),
+              onTap: () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return AddDate();
+                    },
+                  ),
+                );
+              },
+            ),
+            Divider(height: 5.0),
+
             Divider(height: 5.0),
             ListTile(
               leading: Icon(Icons.settings),
