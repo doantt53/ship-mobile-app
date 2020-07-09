@@ -6,9 +6,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ship/data/global.dart';
 import 'package:http/http.dart' as http;
 
+
+//DateTime dateTime = new DateTime(DateTime.now().year, iMonth, 1);
+//String NgagDauTien = DateFormatString(DateTime.now());
+
+//String DateToDay = DateFormatString(DateTime.now());
+DateTime dateToDay = DateTime.now();
+var DateToDay = new DateTime(dateToDay.year, dateToDay.month, 1);
+String ValueDateToDay = DateToDayFormatString(DateToDay);
+
 String BeginDate = DateFormatString(DateTime.now());
 String EndDate = DateFormatString(DateTime.now());
-int Giatri;
+int Giatri=0;
+String DateToDayFormatString(DateTime dateTime) {
+  final y = dateTime.year.toString().padLeft(4, '0');
+  final m = dateTime.month.toString().padLeft(2, '0');
+  final d = dateTime.day.toString().padLeft(2, '0');
+  return "$d-$m-$y";
+}
 String DateFormatString(DateTime dateTime) {
   final y = dateTime.year.toString().padLeft(4, '0');
   final m = dateTime.month.toString().padLeft(2, '0');
@@ -21,7 +36,7 @@ class AddDate extends StatefulWidget {
 }
 
 class _FormAddDate extends State<AddDate> {
-  String _dateStart = DateFormatString(DateTime.now());
+  String _dateStart = ValueDateToDay;
   String _dateEnd = DateFormatString(DateTime.now());
 
   @override
@@ -54,10 +69,11 @@ class _FormAddDate extends State<AddDate> {
                       showTitleActions: true,
                       minTime: DateTime(2015, 1, 1),
                       maxTime: DateTime(2025, 12, 31), onConfirm: (date) {
+                    //date
                     print('confirm $date');
                     _dateStart = DateFormatString(date);
                     setState(() {});
-                  }, currentTime: DateTime.now(), locale: LocaleType.vi);
+                  }, currentTime: DateToDay, locale: LocaleType.vi);
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -164,18 +180,18 @@ class _FormAddDate extends State<AddDate> {
                 height: 10.0,
               ),
               ListTile(
-                title: Text('Số ký tự đã nhắn là: ',
+                title: Text('Tổng số ký tự đã nhắn: ${Giatri}',
                   style: TextStyle(
-                      color: Colors.blue,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 18.0),),
-                subtitle: Text(
-                   '${Giatri}',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0),
-                ),
+//                subtitle: Text(
+//                   '${Giatri}',
+//                  style: TextStyle(
+//                      color: Colors.black,
+//                      fontWeight: FontWeight.bold,
+//                      fontSize: 18.0),
+//                ),
 
               ),
               new SizedBox(
@@ -231,6 +247,8 @@ class _FormAddDate extends State<AddDate> {
     if (response.statusCode == 200) {
       final values = json.decode(response.body);
       Giatri = values['NumMessageContent'] as int;
+      print("Ngay hien tai : "+ValueDateToDay);
+      print(DateToDay);
       print(Giatri);
       return Giatri;
     } else {

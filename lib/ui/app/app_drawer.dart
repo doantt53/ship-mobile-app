@@ -100,9 +100,9 @@ class AppDrawer extends StatelessWidget {
             ),
             Divider(height: 5.0),
             ListTile(
-              leading: Icon(Icons.turned_in),
+              leading: Icon(Icons.textsms),
               title: Text(
-                'Số tin đã nhắn',
+                'Đếm số ký tự đã nhắn',
                 textScaleFactor: textScaleFactor,
               ),
               onTap: () async {
