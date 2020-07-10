@@ -190,12 +190,16 @@ class _ListViewContactState extends State<ContactsShipPage> {
                       backgroundColor: Theme.of(context).accentColor,
                     ),
                     onTap: () async {
-                      final updated = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  PageFull(contactShip: contactShip)));
-                      getContacts();
+                      ContactShip selected = items[position];
+
+                      // Return contact selected
+                      Navigator.of(context).pop(selected);
+//                      final updated = await Navigator.push(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) =>
+//                                  PageFull(contactShip: contactShip)));
+//                      getContacts();
                     }),
               );
             }),
